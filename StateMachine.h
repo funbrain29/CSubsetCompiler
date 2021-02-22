@@ -1,0 +1,75 @@
+#ifndef _STATE_MACHINE_
+#define _STATE_MACHINE_
+
+#include "Token.h"
+
+/*
+Make sure to include all of these:
+const string gTokenTypeNames[] = {
+	"VOID", "MAIN", "INT", "COUT",
+"LESS", "LESSEQUAL", "GREATER", "GREATEREQUAL", "EQUAL", "NOTEQUAL",
+	"INSERTION", "ASSIGNMENT", "PLUS", "MINUS", "TIMES", "DIVIDE",
+	"SEMICOLON", "LPAREN", "RPAREN", "LCURLY", "RCURLY",
+	"IDENTIFIER", "INTEGER",
+	"BAD", "ENDFILE"
+	};
+*/
+
+enum MachineState {
+	START_STATE, IDENTIFIER_STATE, INTEGER_STATE, CANTMOVE_STATE,
+    PLUS_STATE, SEMICOLON_STATE, LESS_STATE, INSERTION_STATE,
+    EXCL_STATE, MINUS_STATE, TIMES_STATE, DIVIDE_STATE,
+    EQUAL_STATE, LPAREN_STATE, RPAREN_STATE, LCURLY_STATE,
+    RCURLY_STATE, EOF_STATE, GREAT_STATE, GREATEQ_STATE,
+	LESSEQ_STATE, ASSIGNMENT_STATE, WHITESPACE_STATE, COMMENT_STATE,
+	ENDCOMMENT_STATE, SCOMMENT_STATE, NOT_STATE, NOTEQ_STATE,
+    LAST_STATE
+	};
+
+const std::string gMachineStateNames[] = {
+	"START_STATE", "IDENTIFIER_STATE", "INTEGER_STATE", "CANTMOVE_STATE",
+    "PLUS_STATE", "SEMICOLON_STATE", "LESS_STATE", "INSERTION_STATE",
+    "EXCL_STATE", "MINUS_STATE", "TIMES_STATE", "DIVIDE_STATE",
+    "EQUAL_STATE", "LPAREN_STATE", "RPAREN_STATE", "LCURLY_STATE",
+    "RCURLY_STATE", "EOF_STATE", "GREAT_STATE", "GREATEQ_STATE",
+	"LESSEQ_STATE", "ASSIGNMENT_STATE", "WHITESPACE_STATE", "COMMENT_STATE",
+	"ENDCOMMENT_STATE", "SCOMMENT_STATE", "NOT_STATE", "NOTEQ_STATE",
+    "LAST_STATE"
+};
+
+enum CharacterType {
+	LETTER_CHAR, DIGIT_CHAR, PLUS_CHAR, SEMICOLON_CHAR, LESS_CHAR,
+    EQUAL_CHAR, LPAREN_CHAR, RPAREN_CHAR, LCURLY_CHAR,
+    EXCL_CHAR, MINUS_CHAR, TIMES_CHAR, DIVIDE_CHAR, NEWLINE_CHAR,
+    RCURLY_CHAR, BAD_CHAR, WHITESPACE_CHAR, EOF_CHAR, GREAT_CHAR,
+    LAST_CHAR
+	};
+
+const std::string gCharacterTypeNames[] = {
+	"LETTER_CHAR", "DIGIT_CHAR", "PLUS_CHAR", "SEMICOLON_CHAR", "LESS_CHAR",
+    "EQUAL_CHAR", "LPAREN_CHAR", "RPAREN_CHAR", "LCURLY_CHAR",
+    "EXCL_CHAR", "MINUS_CHAR", "TIMES_CHAR", "DIVIDE_CHAR", "NEWLINE_CHAR",
+    "RCURLY_CHAR", "BAD_CHAR", "WHITESPACE_CHAR", "EOF_CHAR", "GREAT_CHAR",
+    "LAST_CHAR"
+};
+
+class StateMachineClass {
+public:
+	StateMachineClass();
+	MachineState UpdateState(char currentCharacter, TokenType & correspondingTokenType);
+
+private:
+	MachineState mCurrentState;
+	void AddAllCharsToLegalMove(MachineState beginState, MachineState endState);
+
+	// The matrix of legal moves:
+	MachineState mLegalMoves[LAST_STATE][LAST_CHAR];
+
+	// Which end-machine-states correspond to which token types.
+	// (non end states correspond to the BAD_TOKEN token type)
+	TokenType mCorrespondingTokenTypes[LAST_STATE];
+
+};
+
+
+#endif // TOKEN
