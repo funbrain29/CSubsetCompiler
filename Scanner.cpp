@@ -36,7 +36,7 @@ TokenClass ScannerClass::GetNextToken() {
     } while (machineState != CANTMOVE_STATE
     and machineState != EOF_STATE);
     if (tokenType == BAD_TOKEN) {
-        std::cout << "BAD_TOKEN when parsing lexeme: '" + lexeme + "'\n";
+        std::cout << "Error: BAD_TOKEN when parsing lexeme: '" + lexeme + "'\n";
         exit(EXIT_FAILURE);
     }
     lexeme.pop_back();
