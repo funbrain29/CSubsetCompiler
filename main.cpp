@@ -1,6 +1,19 @@
-#include "Symbol.h"
+#include "Node.h"
 
 int main() {
+    SymbolTableClass st;
+    std::string mystring;
+    IdentifierNode *in1 = new IdentifierNode(&st, "sum");
+    DeclarationStatementNode *ds = new DeclarationStatementNode(in1);
+    IdentifierNode *in2 = new IdentifierNode(&st, "sum");
+    IntegerNode *int1 = new IntegerNode(300);
+    IntegerNode *int2 = new IntegerNode(5);
+    PlusNode *plus = new PlusNode(int1,int2);
+    AssignmentStatementNode *as = new AssignmentStatementNode(in2,plus);
+    StatementGroupNode *sg = new StatementGroupNode();
+    sg->addStatement(ds);
+    sg->addStatement(as);
+    std::cout << "Success!\n";
     return 0;
 }
 
