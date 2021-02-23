@@ -1,5 +1,6 @@
 #include "Node.h"
 
+// test Node.cpp and Node.h
 int main() {
     SymbolTableClass st;
     std::string mystring;
@@ -13,7 +14,11 @@ int main() {
     StatementGroupNode *sg = new StatementGroupNode();
     sg->addStatement(ds);
     sg->addStatement(as);
-    std::cout << "Success!\n";
+    BlockNode *bn = new BlockNode(sg);
+    ProgramNode *pn = new ProgramNode(bn);
+    StartNode *sn = new StartNode(pn);
+    delete sn;
+    in1->DeclareVariable();
     return 0;
 }
 

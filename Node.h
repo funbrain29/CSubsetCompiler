@@ -85,12 +85,13 @@ class AssignmentStatementNode: public StatementNode {
     virtual ~AssignmentStatementNode();
 };
 
-class CoutStatementClass: public StatementNode {
+class CoutStatementNode: public StatementNode {
     private:
     ExpressionNode *mExpressionNode;
 
     public:
-    CoutStatementClass(ExpressionNode *en);
+    CoutStatementNode(ExpressionNode *en);
+    ~CoutStatementNode();
 };
 
 class ExpressionNode {
