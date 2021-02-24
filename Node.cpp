@@ -1,7 +1,7 @@
 #include "node.h"
 
 Node::~Node() {
-    std::cout << "Deleting Node\n";
+    MSG("Deleting Node\n");
 }
 
 // StartNode
@@ -10,7 +10,7 @@ StartNode::StartNode(ProgramNode *p) {
 }
 
 StartNode::~StartNode() {
-    std::cout << "StartNode Deleting ProgramNode\n";
+    MSG("StartNode Deleting ProgramNode\n");
     delete mProgramNode;
 }
 
@@ -20,7 +20,7 @@ ProgramNode::ProgramNode(BlockNode *b) {
 }
 
 ProgramNode::~ProgramNode() {
-    std::cout << "ProgramNode Deleting BlockNode\n";
+    MSG("ProgramNode Deleting BlockNode\n");
     delete mBlockNode;
 }
 
@@ -30,7 +30,7 @@ BlockNode::BlockNode(StatementGroupNode *s) {
 }
 
 BlockNode::~BlockNode() {
-    std::cout << "BlockNode Deleting StatementGroupNode\n";
+    MSG("BlockNode Deleting StatementGroupNode\n");
     delete mStatementGroupNode;
 }
 
@@ -42,9 +42,9 @@ void StatementGroupNode::addStatement(StatementNode *p) {
 StatementGroupNode::~StatementGroupNode() {
     std::vector<StatementNode*>::iterator it;
     int i = 0;
-    std::cout << "StatementGroupNode Deleting StatementNodes\n";
+    MSG("StatementGroupNode Deleting StatementNodes\n");
     for (it = mStatementNodes.begin(); it != mStatementNodes.end(); it++,i++ ) {
-    std::cout << "StatementGroupNode Deleted StatementNode\n";
+    MSG("StatementGroupNode Deleted StatementNode\n");
         delete mStatementNodes[i];
         }
 }
@@ -55,7 +55,7 @@ DeclarationStatementNode::DeclarationStatementNode(IdentifierNode *p) {
 }
 
 DeclarationStatementNode::~DeclarationStatementNode() {
-    std::cout << "DeclarationStatementNode Deleting IdentifierNode\n";
+    MSG("DeclarationStatementNode Deleting IdentifierNode\n");
     delete mIdentifierNode;
 }
 
@@ -66,7 +66,7 @@ AssignmentStatementNode::AssignmentStatementNode(IdentifierNode *in, ExpressionN
 }
 
 AssignmentStatementNode::~AssignmentStatementNode() {
-    std::cout << "AssignmentStatementNode Deleting IdentifierNode and ExpressionNode\n";
+    MSG("AssignmentStatementNode Deleting IdentifierNode and ExpressionNode\n");
     delete mIdentifierNode;
     delete mExpressionNode;
 }
@@ -77,13 +77,13 @@ CoutStatementNode::CoutStatementNode(ExpressionNode *en) {
 }
 
 CoutStatementNode::~CoutStatementNode() {
-    std::cout << "CoutStatementNode Deleting ExpressionNode\n";
+    MSG("CoutStatementNode Deleting ExpressionNode\n");
     delete mExpressionNode;
 }
 
 // ExpressionNode
 ExpressionNode::~ExpressionNode() {
-    std::cout << "Deleting ExpressionNode\n";
+    MSG("Deleting ExpressionNode\n");
 }
 
 // IntegerNode
@@ -121,7 +121,7 @@ BinaryOperatorNode::BinaryOperatorNode(ExpressionNode *left, ExpressionNode *rig
 
 
 BinaryOperatorNode::~BinaryOperatorNode() {
-    std::cout << "BinaryOperatorNode Deleting ExpressionNodes\n";
+    MSG("BinaryOperatorNode Deleting ExpressionNodes\n");
     delete mLeftExpressionNode;
     delete mRightExpressionNode;
 }
@@ -132,4 +132,76 @@ int PlusNode::Evaluate() {
 }
 
 PlusNode::PlusNode(ExpressionNode * left, ExpressionNode * right)
+: BinaryOperatorNode(left, right) {}
+
+// MinusNode
+int MinusNode::Evaluate() {
+    return mLeftExpressionNode->Evaluate() - mRightExpressionNode->Evaluate();
+}
+
+MinusNode::MinusNode(ExpressionNode * left, ExpressionNode * right)
+: BinaryOperatorNode(left, right) {}
+
+// TimesNode
+int TimesNode::Evaluate() {
+    return mLeftExpressionNode->Evaluate() * mRightExpressionNode->Evaluate();
+}
+
+TimesNode::TimesNode(ExpressionNode * left, ExpressionNode * right)
+: BinaryOperatorNode(left, right) {}
+
+// DivideNode
+int DivideNode::Evaluate() {
+    return mLeftExpressionNode->Evaluate() / mRightExpressionNode->Evaluate();
+}
+
+DivideNode::DivideNode(ExpressionNode * left, ExpressionNode * right)
+: BinaryOperatorNode(left, right) {}
+
+// LessNode
+int LessNode::Evaluate() {
+    return mLeftExpressionNode->Evaluate() < mRightExpressionNode->Evaluate();
+}
+
+LessNode::LessNode(ExpressionNode * left, ExpressionNode * right)
+: BinaryOperatorNode(left, right) {}
+
+// LessEqualNode
+int LessEqualNode::Evaluate() {
+    return mLeftExpressionNode->Evaluate() <= mRightExpressionNode->Evaluate();
+}
+
+LessEqualNode::LessEqualNode(ExpressionNode * left, ExpressionNode * right)
+: BinaryOperatorNode(left, right) {}
+
+// GreaterNode
+int GreaterNode::Evaluate() {
+    return mLeftExpressionNode->Evaluate() > mRightExpressionNode->Evaluate();
+}
+
+GreaterNode::GreaterNode(ExpressionNode * left, ExpressionNode * right)
+: BinaryOperatorNode(left, right) {}
+
+// GreaterEqualNode
+int GreaterEqualNode::Evaluate() {
+    return mLeftExpressionNode->Evaluate() >= mRightExpressionNode->Evaluate();
+}
+
+GreaterEqualNode::GreaterEqualNode(ExpressionNode * left, ExpressionNode * right)
+: BinaryOperatorNode(left, right) {}
+
+// EqualNode
+int EqualNode::Evaluate() {
+    return mLeftExpressionNode->Evaluate() == mRightExpressionNode->Evaluate();
+}
+
+EqualNode::EqualNode(ExpressionNode * left, ExpressionNode * right)
+: BinaryOperatorNode(left, right) {}
+
+// NotEqualNode
+int NotEqualNode::Evaluate() {
+    return mLeftExpressionNode->Evaluate() != mRightExpressionNode->Evaluate();
+}
+
+NotEqualNode::NotEqualNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}

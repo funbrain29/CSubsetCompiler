@@ -1,19 +1,40 @@
 #include "Node.h"
 
-// test Node.cpp and Node.h
+// test Nodes
 int main() {
     SymbolTableClass st;
-    std::string mystring;
+
+    // in1 -> ds
     IdentifierNode *in1 = new IdentifierNode(&st, "sum");
     DeclarationStatementNode *ds = new DeclarationStatementNode(in1);
+
+    //in2, int1 + int2 = plus -> as1
     IdentifierNode *in2 = new IdentifierNode(&st, "sum");
     IntegerNode *int1 = new IntegerNode(300);
     IntegerNode *int2 = new IntegerNode(5);
     PlusNode *plus = new PlusNode(int1,int2);
-    AssignmentStatementNode *as = new AssignmentStatementNode(in2,plus);
+    AssignmentStatementNode *as1 = new AssignmentStatementNode(in2,plus);
+
+    //in3, int3 - int4 = minus -> as2
+    IdentifierNode *in3 = new IdentifierNode(&st, "sum");
+    IntegerNode *int3 = new IntegerNode(300);
+    IntegerNode *int4 = new IntegerNode(5);
+    MinusNode *minus = new MinusNode(int3,int4);
+    AssignmentStatementNode *as2 = new AssignmentStatementNode(in3,minus);
+
+    //in4, int5 > int6 = greater -> as3
+    IdentifierNode *in4 = new IdentifierNode(&st, "sum");
+    IntegerNode *int5 = new IntegerNode(300);
+    IntegerNode *int6 = new IntegerNode(5);
+    GreaterNode *greater = new GreaterNode(int5,int6);
+    AssignmentStatementNode *as3 = new AssignmentStatementNode(in4,greater);
+
     StatementGroupNode *sg = new StatementGroupNode();
     sg->addStatement(ds);
-    sg->addStatement(as);
+    sg->addStatement(as1);
+    sg->addStatement(as2);
+    sg->addStatement(as3);
+
     BlockNode *bn = new BlockNode(sg);
     ProgramNode *pn = new ProgramNode(bn);
     StartNode *sn = new StartNode(pn);
