@@ -143,6 +143,6 @@ TokenType & correspondingTokenType) {
     MSG("Character: '" + std::string(1,currentCharacter) + "'"
     + " gives CharType: '" + gCharacterTypeNames[charType] + "'"
     + " gives MachineState: '" + gMachineStateNames[mCurrentState] + "'"
-    + " gives Token: '" + testtoken.GetTokenTypeName() + "'");
+    + " gives Token: '" + testtoken.GetTokenTypeName() + "'\n");
     return mCurrentState;
 }

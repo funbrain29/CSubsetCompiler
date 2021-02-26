@@ -1,28 +1,28 @@
-    void
-    main
-    <
-    <=
-    >
-    >=
-    ==
-    !=
+void
+main
+<
+<=
+>
+>=
+==
+!=
 
-    <<
-    =
-    +
-    -
-    *
-    /
+<<
+=
++
+-
+*
+/
 
-    ;
-    (
-    )
-    {
-    }
-    sum
-    123
-    // hello world
-    /* Hey sum +- * / / * */
+;
+(
+)
+{
+}
+sum
+123
+// hello world
+/* Hey sum +- * / / * */
 
 void main() {
 	int sum;

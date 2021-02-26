@@ -19,6 +19,15 @@ class CoutStatementNode;
 class IntegerNode;
 class BinaryOperatorNode;
 class PlusNode;
+class MinusNode;
+class TimesNode;
+class DivideNode;
+class LessNode;
+class LessEqualNode;
+class GreaterNode;
+class GreaterEqualNode;
+class EqualNode;
+class NotEqualNode;
 
 class Node {
     private:
