@@ -1,2 +1,6 @@
 # Subset of C Compiler
-Written by Dillon Anderson during the Dixie State University College course "CS-4550 Compilers". Compiler developed and class taught by Barton Stander.
+A compiler of a very small subset of C.  
+  
+Code written by Dillon Anderson for the "CS-4550 Compilers" class at Dixie State University.  
+Compiler developed and class taught by Barton Stander.  
+
