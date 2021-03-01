@@ -1,7 +1,7 @@
 #ifndef TEST
 #define TEST
 
-#include "Node.h"
+#include "Parser.h"
 
 int testNodes();
 int testSymbolClass();

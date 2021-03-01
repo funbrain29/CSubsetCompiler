@@ -45,3 +45,16 @@ TokenClass ScannerClass::GetNextToken() {
     mFin.unget();
     return tokenClass;
 }
+
+TokenClass ScannerClass::PeekNextToken() {
+    char c = mFin.get();
+    int currentLineNumber = mLineNumber;
+    std::streampos p = mFin.tellg();
+    TokenClass t = GetNextToken();
+    if(!mFin) {
+        mFin.clear();
+    }
+    mFin.seekg(p);
+    mLineNumber = currentLineNumber;
+    return t;
+}
