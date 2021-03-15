@@ -53,7 +53,12 @@ class ProgramNode: public Node {
     virtual ~ProgramNode();
 };
 
-class BlockNode: public Node {
+class StatementNode: public Node {
+    private:
+    public:
+};
+
+class BlockNode: public StatementNode {
     private:
     StatementGroupNode *mStatementGroupNode;
 
@@ -71,10 +76,6 @@ class StatementGroupNode: public Node {
     ~StatementGroupNode();
 };
 
-class StatementNode: public Node {
-    private:
-    public:
-};
 
 class DeclarationStatementNode: public StatementNode {
     private:

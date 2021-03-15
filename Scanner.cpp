@@ -43,11 +43,11 @@ TokenClass ScannerClass::GetNextToken() {
     TokenClass tokenClass(tokenType, lexeme);
     tokenClass.CheckReserved();
     mFin.unget();
+    MSG("   Scanner: Scanned token \"" << gTokenTypeNames[tokenType] << "\" from lexeme \"" << lexeme << "\"\n" );
     return tokenClass;
 }
 
 TokenClass ScannerClass::PeekNextToken() {
-    char c = mFin.get();
     int currentLineNumber = mLineNumber;
     std::streampos p = mFin.tellg();
     TokenClass t = GetNextToken();

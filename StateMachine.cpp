@@ -140,9 +140,9 @@ TokenType & correspondingTokenType) {
         correspondingTokenType = mCorrespondingTokenTypes[mCurrentState];
     }
     TokenClass testtoken(correspondingTokenType,std::string(1,currentCharacter));
-    MSG("Character: '" + std::string(1,currentCharacter) + "'"
+    /*MSG("Character: '" + std::string(1,currentCharacter) + "'"
     + " gives CharType: '" + gCharacterTypeNames[charType] + "'"
     + " gives MachineState: '" + gMachineStateNames[mCurrentState] + "'"
-    + " gives Token: '" + testtoken.GetTokenTypeName() + "'\n");
+    + " gives Token: '" + testtoken.GetTokenTypeName() + "'\n");*/
     return mCurrentState;
 }

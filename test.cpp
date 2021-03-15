@@ -71,7 +71,7 @@ int testSymbolClass() {
     S.SetValue("s",200);
     std::cout << S.GetValue("s") << std::endl;
 
-    std::cout << "(Intentional Error:) ";
+    std::cout << "(Not actually an Error:) ";
     S.AddEntry("s");
     return 0;
 }
