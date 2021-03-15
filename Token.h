@@ -43,6 +43,7 @@ public:
 	void CheckReserved();
 	static const std::string & GetTokenTypeName(TokenType type)
 		{ return gTokenTypeNames[type]; }
+	TokenType getTokenType();
 };
 
 std::ostream & operator<<(std::ostream & out, const TokenClass & tc);

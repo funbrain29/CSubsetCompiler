@@ -17,5 +17,8 @@ int main() {
     if (testNodes() == 0) {
         std::cout << "--Nodes Test Finished--\n";
     };
+    if (testParser() == 0) {
+        std::cout << "--Parser Test Finished--\n";
+    };
     return 0;
 }

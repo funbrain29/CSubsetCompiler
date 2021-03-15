@@ -1,5 +1,14 @@
 #include "test.h"
 
+// test Parser
+int testParser() {
+    ScannerClass scanner("source.txt");
+    SymbolTableClass symboltable;
+    ParserClass *pc = new ParserClass(&scanner,&symboltable);
+    pc->Start();
+    return 0;
+}
+
 // test Nodes
 int testNodes() {
     SymbolTableClass st;

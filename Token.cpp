@@ -10,6 +10,9 @@ TokenClass::TokenClass(TokenType type, const std::string & lexeme) {
     mLexeme = lexeme;
 }
 
+TokenType TokenClass::getTokenType() {
+    return mType;
+}
 
 void TokenClass::CheckReserved() {
     if (GetLexeme() == "void") {

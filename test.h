@@ -7,5 +7,6 @@ int testNodes();
 int testSymbolClass();
 int testScanner();
 int testToken();
+int testParser();
 
 #endif
