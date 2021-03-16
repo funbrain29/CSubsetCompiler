@@ -4,8 +4,9 @@
 int testParser() {
     ScannerClass scanner("source.txt");
     SymbolTableClass symboltable;
-    ParserClass *pc = new ParserClass(&scanner,&symboltable);
-    pc->Start();
+    ParserClass pc = ParserClass(&scanner,&symboltable);
+    StartNode* sn = pc.Start();
+    delete sn;
     return 0;
 }
 

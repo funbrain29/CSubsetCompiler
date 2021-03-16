@@ -8,24 +8,24 @@ private:
     ScannerClass *mScanner;
     SymbolTableClass *mSymbolTable;
     TokenClass Match(TokenType expectedType);
-    void Program();
-    void Block();
-    void StatementGroup();
-    bool Statement();
-    void Declaration();
-    void Assignment();
-    void Cout();
-    void Identifier();
-    void Integer();
-    void Expression();
-    void Relational();
-    void PlusMinus();
-    void TimesDivide();
-    void Factor();
+    ProgramNode* Program();
+    BlockNode* Block();
+    StatementGroupNode* StatementGroup();
+    StatementNode* Statement();
+    DeclarationStatementNode* Declaration();
+    AssignmentStatementNode* Assignment();
+    CoutStatementNode* Cout();
+    IdentifierNode* Identifier();
+    IntegerNode* Integer();
+    ExpressionNode* Expression();
+    ExpressionNode* Relational();
+    ExpressionNode* PlusMinus();
+    ExpressionNode* TimesDivide();
+    ExpressionNode* Factor();
 
 public:
     ParserClass(ScannerClass *Scanner, SymbolTableClass *SymbolTable);
-    void Start();
+    StartNode* Start();
 };
 
 #endif // PARSER

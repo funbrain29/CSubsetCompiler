@@ -22,164 +22,193 @@ TokenClass ParserClass::Match(TokenType expectedType) {
 	return currentToken; // the one we just processed
 }
 
-void ParserClass::Start() {
-	Program();
+StartNode* ParserClass::Start() {
+	ProgramNode *pn = Program();
 	Match(ENDFILE_TOKEN);
+	StartNode* sn = new StartNode(pn);
+	return sn;
 }
 
-void ParserClass::Program() {
+ProgramNode* ParserClass::Program() {
 	Match(VOID_TOKEN);
 	Match(MAIN_TOKEN);
 	Match(LPAREN_TOKEN);
 	Match(RPAREN_TOKEN);
-	Block();
+	BlockNode* bn = Block();
+	ProgramNode* pb = new ProgramNode(bn);
+	return pb;
 }
 
-void ParserClass::Block() {
+BlockNode* ParserClass::Block() {
 	Match(LCURLY_TOKEN);
-	StatementGroup();
+	StatementGroupNode* sgn = StatementGroup();
 	Match(RCURLY_TOKEN);
+	BlockNode* bn = new BlockNode(sgn);
+	return bn;
 }
 
-void ParserClass::StatementGroup() {
+StatementGroupNode* ParserClass::StatementGroup() {
+	StatementGroupNode* sgn = new StatementGroupNode;
     while (true) {
-        bool ok = Statement();
-        if (!ok) { return; }
+        StatementNode* sn = Statement();
+        if (sn == NULL) { break; }
+		sgn->addStatement(sn);
     }
+	return sgn;
 }
 
-bool ParserClass::Statement() {
+StatementNode* ParserClass::Statement() {
     TokenClass tc;
 	MSG("\n---Statement peeking\n");
 	tc = mScanner->PeekNextToken();
 	TokenType tokentype = tc.getTokenType();
 	MSG("---Statement token peeked: " << gTokenTypeNames[tokentype] << "\n\n");
 	if (tokentype == INT_TOKEN) {
-		Declaration();
+		DeclarationStatementNode* xsn = Declaration();
+		return xsn;
 	} else if (tokentype == IDENTIFIER_TOKEN) {
-		Assignment();
+		AssignmentStatementNode* xsn = Assignment();
+		return xsn;
 	} else if (tokentype == COUT_TOKEN) {
-		Cout();
+		CoutStatementNode* xsn = Cout();
+		return xsn;
 	} else if (tokentype == LCURLY_TOKEN) {
-		Block();
-	} else { return false; }
-	return true;
+		BlockNode* xsn = Block();
+		return xsn;
+	}
+	return NULL;
 }
 
-void ParserClass::Declaration() {
+DeclarationStatementNode* ParserClass::Declaration() {
 	Match(INT_TOKEN);
-	Identifier();
+	IdentifierNode* in = Identifier();
 	Match(SEMICOLON_TOKEN);
+	DeclarationStatementNode* dsn = new DeclarationStatementNode(in);
+	return dsn;
 }
 
-void ParserClass::Assignment() {
-	Identifier();
+AssignmentStatementNode* ParserClass::Assignment() {
+	IdentifierNode* in = Identifier();
 	Match(ASSIGNMENT_TOKEN);
-	Expression();
+	ExpressionNode* en = Expression();
 	Match(SEMICOLON_TOKEN);
+	AssignmentStatementNode* asn = new AssignmentStatementNode(in,en);
+	return asn;
 }
 
-void ParserClass::Cout() {
+CoutStatementNode* ParserClass::Cout() {
 	Match(COUT_TOKEN);
 	Match(INSERTION_TOKEN);
-	Expression();
+	ExpressionNode* en = Expression();
 	Match(SEMICOLON_TOKEN);
+	CoutStatementNode* cn = new CoutStatementNode(en);
+	return cn;
 }
 
-void ParserClass::Identifier() {
-	Match(IDENTIFIER_TOKEN);
+IdentifierNode* ParserClass::Identifier() {
+	TokenClass tc = Match(IDENTIFIER_TOKEN);
+	IdentifierNode* in = new IdentifierNode(mSymbolTable,tc.GetLexeme());
+	return in;
 }
 
-void ParserClass::Integer() {
-	Match(INTEGER_TOKEN);
+IntegerNode* ParserClass::Integer() {
+	TokenClass tc = Match(INTEGER_TOKEN);
+	IntegerNode* in = new IntegerNode(stoi(tc.GetLexeme()));
+	return in;
 }
 
-void ParserClass::Expression() {
-	Relational();
+ExpressionNode* ParserClass::Expression() {
+	return Relational();
 }
 
-void ParserClass::Relational() {
-	PlusMinus();
-	// Handle the optional tail:
+ExpressionNode* ParserClass::Relational() {
+	ExpressionNode* current = PlusMinus();
+
 	MSG("\n---Relational peeking\n");
 	TokenType tt = mScanner->PeekNextToken().GetTokenType();
 	MSG("---Relational token peeked: " << gTokenTypeNames[tt] << "\n\n");
+
 	if(tt == LESS_TOKEN) {
 		Match(tt);
-		PlusMinus();
+		current = new LessNode(current,PlusMinus());
 	}
 	else if(tt == LESSEQUAL_TOKEN) {
 		Match(tt);
-		PlusMinus();
+		current = new LessEqualNode(current,PlusMinus());
 	}
 	else if(tt == GREATER_TOKEN) {
 		Match(tt);
-		PlusMinus();
+		current = new GreaterNode(current,PlusMinus());
 	}
 	else if(tt == GREATEREQUAL_TOKEN) {
 		Match(tt);
-		PlusMinus();
+		current = new GreaterEqualNode(current,PlusMinus());
 	}
 	else if(tt == EQUAL_TOKEN) {
 		Match(tt);
-		PlusMinus();
+		current = new EqualNode(current,PlusMinus());
 	}
 	else if(tt == NOTEQUAL_TOKEN) {
 		Match(tt);
-		PlusMinus();
+		current = new NotEqualNode(current,PlusMinus());
 	}
-	else { return; }
+	return current;
 }
 
-void ParserClass::PlusMinus() {
-	TimesDivide();
+ExpressionNode* ParserClass::PlusMinus() {
+	ExpressionNode* current = TimesDivide();
 	while(true) {
+
 		MSG("\n---PlusMinus peeking\n");
 		TokenType tt = mScanner->PeekNextToken().GetTokenType();
 		MSG("---PlusMinus token peeked: " << gTokenTypeNames[tt] << "\n\n");
+
 		if(tt == PLUS_TOKEN) {
 			Match(tt);
-			TimesDivide();
+			current = new PlusNode(current,TimesDivide());
 		} else if(tt == MINUS_TOKEN) {
 			Match(tt);
-			TimesDivide();
-		} else { return; }
+			current = new MinusNode(current,TimesDivide());
+		} else { return current; }
 	}
 }
 
-void ParserClass::TimesDivide() {
-	Factor();
+ExpressionNode* ParserClass::TimesDivide() {
+	ExpressionNode* current = Factor();
 	while(true) {
+
 		MSG("\n---TimesDivide peeking\n");
 		TokenType tt = mScanner->PeekNextToken().GetTokenType();
 		MSG("---TimesDivide token peeked: " << gTokenTypeNames[tt] << "\n\n");
+
 		if(tt == TIMES_TOKEN) {
 			Match(tt);
-			Factor();
+			current = new TimesNode(current,Factor());
 		} else if(tt == DIVIDE_TOKEN) {
 			Match(tt);
-			Factor();
-		} else { return; }
+			current = new DivideNode(current,Factor());
+		} else { return current; }
 	}
 }
 
-void ParserClass::Factor() {
-    TokenClass tc;
+ExpressionNode* ParserClass::Factor() {
+
 	MSG("\n---Factor peeking\n");
-	tc = mScanner->PeekNextToken();
+	TokenClass tc = mScanner->PeekNextToken();
 	TokenType tokentype = tc.getTokenType();
 	MSG("---Factor token peeked: " << gTokenTypeNames[tokentype] << "\n\n");
+
 	if (tokentype == IDENTIFIER_TOKEN) {
-		Identifier();
+		return Identifier();
 	} else if (tokentype == INTEGER_TOKEN) {
-		Integer();
+		return Integer();
 	} else if (tokentype == LPAREN_TOKEN) {
 		Match(LPAREN_TOKEN);
-		Expression();
+		return Expression();
 		Match(RPAREN_TOKEN);
 	} else {
 		std::cout << "ERR: Invalid Factor Token :" ;
 		exit(1);
 	}
-	return;
+	return NULL;
 }

@@ -1,5 +1,9 @@
 void main() {
 	int sum;
 	sum = 35 + 400;
+	difference = 90 - 400;
+	times = 90 * 400;
+	div = 90 / 400;
+	eql = 90 == 400;
 	cout << sum;
 }
