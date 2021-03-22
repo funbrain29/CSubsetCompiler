@@ -15,6 +15,8 @@ private:
     DeclarationStatementNode* Declaration();
     AssignmentStatementNode* Assignment();
     CoutStatementNode* Cout();
+    IfStatementNode* If();
+    WhileStatementNode* While();
     IdentifierNode* Identifier();
     IntegerNode* Integer();
     ExpressionNode* Expression();

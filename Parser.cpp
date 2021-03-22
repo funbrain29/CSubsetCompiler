@@ -72,6 +72,12 @@ StatementNode* ParserClass::Statement() {
 	} else if (tokentype == COUT_TOKEN) {
 		CoutStatementNode* xsn = Cout();
 		return xsn;
+	} else if (tokentype == IF_TOKEN) {
+		IfStatementNode* xsn = If();
+		return xsn;
+	} else if (tokentype == WHILE_TOKEN) {
+		WhileStatementNode* xsn = While();
+		return xsn;
 	} else if (tokentype == LCURLY_TOKEN) {
 		BlockNode* xsn = Block();
 		return xsn;
@@ -103,6 +109,30 @@ CoutStatementNode* ParserClass::Cout() {
 	Match(SEMICOLON_TOKEN);
 	CoutStatementNode* cn = new CoutStatementNode(en);
 	return cn;
+}
+
+IfStatementNode* ParserClass::If() {
+	Match(IF_TOKEN);
+	Match(LPAREN_TOKEN);
+	ExpressionNode* en = Expression();
+	Match(RPAREN_TOKEN);
+	Match(LCURLY_TOKEN);
+	StatementNode* sn = Statement();
+	Match(RCURLY_TOKEN);
+	IfStatementNode* in = new IfStatementNode(en,sn);
+	return in;
+}
+
+WhileStatementNode* ParserClass::While() {
+	Match(WHILE_TOKEN);
+	Match(LPAREN_TOKEN);
+	ExpressionNode* en = Expression();
+	Match(RPAREN_TOKEN);
+	Match(LCURLY_TOKEN);
+	StatementNode* sn = Statement();
+	Match(RCURLY_TOKEN);
+	WhileStatementNode* in = new WhileStatementNode(en,sn);
+	return in;
 }
 
 IdentifierNode* ParserClass::Identifier() {

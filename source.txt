@@ -1,9 +1,18 @@
 void main() {
 	int sum;
 	sum = 35 + 400;
+	int difference;
 	difference = 90 - 400;
+	int times;
 	times = 90 * 400;
+	int div;
 	div = 90 / 400;
+	int eql;
 	eql = 90 == 400;
-	cout << sum;
+	if (sum == 435) {
+		cout << sum;
+	}
+	while (sum == 436) {
+		cout << sum;
+	}
 }

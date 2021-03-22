@@ -33,6 +33,7 @@ class Node {
     private:
     public:
     virtual ~Node();
+    virtual void Interpret() = 0;
 };
 
 class StartNode: public Node {
@@ -41,6 +42,7 @@ class StartNode: public Node {
 
     public:
     StartNode(ProgramNode *p);
+    virtual void Interpret();
     virtual ~StartNode();
 };
 
@@ -50,6 +52,7 @@ class ProgramNode: public Node {
 
     public:
     ProgramNode(BlockNode *b);
+    virtual void Interpret();
     virtual ~ProgramNode();
 };
 
@@ -64,6 +67,7 @@ class BlockNode: public StatementNode {
 
     public:
     BlockNode(StatementGroupNode *s);
+    virtual void Interpret();
     virtual ~BlockNode();
 };
 
@@ -73,6 +77,7 @@ class StatementGroupNode: public Node {
 
     public:
     void addStatement(StatementNode *p);
+    virtual void Interpret();
     ~StatementGroupNode();
 };
 
@@ -82,6 +87,7 @@ class DeclarationStatementNode: public StatementNode {
     IdentifierNode *mIdentifierNode;
     public:
     DeclarationStatementNode(IdentifierNode *p);
+    virtual void Interpret();
     ~DeclarationStatementNode();
 };
 
@@ -92,6 +98,7 @@ class AssignmentStatementNode: public StatementNode {
 
     public:
     AssignmentStatementNode(IdentifierNode *in, ExpressionNode *en);
+    virtual void Interpret();
     virtual ~AssignmentStatementNode();
 };
 
@@ -101,7 +108,31 @@ class CoutStatementNode: public StatementNode {
 
     public:
     CoutStatementNode(ExpressionNode *en);
+    virtual void Interpret();
     ~CoutStatementNode();
+};
+
+class IfStatementNode: public StatementNode {
+    private:
+    ExpressionNode *mExpressionNode;
+    StatementNode *mStatementNode;
+
+    public:
+    IfStatementNode(ExpressionNode *en, StatementNode *sn);
+    virtual void Interpret();
+    ~IfStatementNode();
+};
+
+class WhileStatementNode: public StatementNode {
+    private:
+    ExpressionNode *mExpressionNode;
+    StatementNode *mStatementNode;
+
+
+    public:
+    WhileStatementNode(ExpressionNode *en, StatementNode *sn);
+    virtual void Interpret();
+    ~WhileStatementNode();
 };
 
 class ExpressionNode {

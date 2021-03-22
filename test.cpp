@@ -6,6 +6,10 @@ int testParser() {
     SymbolTableClass symboltable;
     ParserClass pc = ParserClass(&scanner,&symboltable);
     StartNode* sn = pc.Start();
+    MSG("Parser Started, Interpreting...\n");
+    sn->Interpret();
+
+
     delete sn;
     return 0;
 }
