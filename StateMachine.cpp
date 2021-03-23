@@ -42,6 +42,8 @@ StateMachineClass::StateMachineClass() {
     mLegalMoves[START_STATE][RCURLY_CHAR]= RCURLY_STATE;
     mLegalMoves[START_STATE][EXCL_CHAR]= NOT_STATE;
     mLegalMoves[START_STATE][EOF_CHAR]= EOF_STATE;
+    mLegalMoves[START_STATE][AND_CHAR]= AMP_STATE;
+    mLegalMoves[START_STATE][OR_CHAR]= BAR_STATE;
     //Whitespace
     mLegalMoves[START_STATE][WHITESPACE_CHAR]= START_STATE;
     mLegalMoves[START_STATE][NEWLINE_CHAR]= START_STATE;
@@ -52,6 +54,8 @@ StateMachineClass::StateMachineClass() {
     mLegalMoves[INTEGER_STATE][DIGIT_CHAR]= INTEGER_STATE;
     mLegalMoves[ASSIGNMENT_STATE][EQUAL_CHAR]= EQUAL_STATE;
     mLegalMoves[NOT_STATE][EQUAL_CHAR]= NOTEQ_STATE;
+    mLegalMoves[AMP_STATE][AND_CHAR]= AND_STATE;
+    mLegalMoves[BAR_STATE][OR_CHAR]= OR_STATE;
     //Identifier continues
     mLegalMoves[IDENTIFIER_STATE][LETTER_CHAR]= IDENTIFIER_STATE;
     mLegalMoves[IDENTIFIER_STATE][DIGIT_CHAR]= IDENTIFIER_STATE;
@@ -63,8 +67,7 @@ StateMachineClass::StateMachineClass() {
     mLegalMoves[SCOMMENT_STATE][NEWLINE_CHAR]= START_STATE;
 
     //Corresponding TokenTypes
-    for(int i=0; i<LAST_STATE; i++)
-    {
+    for(int i=0; i<LAST_STATE; i++) {
         mCorrespondingTokenTypes[i]=BAD_TOKEN;
     }
 
@@ -75,6 +78,8 @@ StateMachineClass::StateMachineClass() {
     mCorrespondingTokenTypes[GREATEQ_STATE] = GREATEREQUAL_TOKEN;
     mCorrespondingTokenTypes[EQUAL_STATE] = EQUAL_TOKEN;
     mCorrespondingTokenTypes[NOTEQ_STATE] = NOTEQUAL_TOKEN;
+    mCorrespondingTokenTypes[AND_STATE] = AND_TOKEN;
+    mCorrespondingTokenTypes[OR_STATE] = OR_TOKEN;
     // Other Operators:
     mCorrespondingTokenTypes[INSERTION_STATE] = INSERTION_TOKEN;
     mCorrespondingTokenTypes[ASSIGNMENT_STATE] = ASSIGNMENT_TOKEN;
@@ -134,6 +139,10 @@ TokenType & correspondingTokenType) {
         charType = TIMES_CHAR;
     } else if(currentCharacter == '/') {
         charType = DIVIDE_CHAR;
+    } else if(currentCharacter == '&') {
+        charType = AND_CHAR;
+    } else if(currentCharacter == '|') {
+        charType = OR_CHAR;
     }
     mCurrentState = mLegalMoves[mCurrentState][charType];
     if (mCurrentState != CANTMOVE_STATE) {

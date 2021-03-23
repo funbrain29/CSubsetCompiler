@@ -148,7 +148,35 @@ IntegerNode* ParserClass::Integer() {
 }
 
 ExpressionNode* ParserClass::Expression() {
-	return Relational();
+	return Or();
+}
+
+ExpressionNode* ParserClass::Or() {
+	ExpressionNode* current = And();
+
+	MSG("\n---Or peeking\n");
+	TokenType tt = mScanner->PeekNextToken().GetTokenType();
+	MSG("---Or token peeked: " << gTokenTypeNames[tt] << "\n\n");
+
+	if(tt == OR_TOKEN) {
+		Match(tt);
+		current = new OrNode(current,And());
+	}
+	return current;
+}
+
+ExpressionNode* ParserClass::And() {
+	ExpressionNode* current = Relational();
+
+	MSG("\n---Or peeking\n");
+	TokenType tt = mScanner->PeekNextToken().GetTokenType();
+	MSG("---Or token peeked: " << gTokenTypeNames[tt] << "\n\n");
+
+	if(tt == AND_TOKEN) {
+		Match(tt);
+		current = new OrNode(current,Relational());
+	}
+	return current;
 }
 
 ExpressionNode* ParserClass::Relational() {

@@ -1,7 +1,5 @@
 #include "Token.h"
 
-// Complete Token.cpp by providing implementations for the TokenClass constructors, the CheckReserved method, and the output stream operator function.  The CheckReserved method should change the TokenType from IDENTIFIER_TOKEN, if mLexeme matches one of the reserved words.  For example, if mLexeme is “void” then reset mType to VOID_TOKEN.
-
 TokenClass::TokenClass() {
 }
 
@@ -31,7 +29,6 @@ void TokenClass::CheckReserved() {
         mType = WHILE_TOKEN;
     }
 }
-
 
 std::ostream & operator<<(std::ostream & out, const TokenClass & tc) {
     out.setf(std::ios::left);

@@ -20,6 +20,8 @@ private:
     IdentifierNode* Identifier();
     IntegerNode* Integer();
     ExpressionNode* Expression();
+    ExpressionNode* Or();
+    ExpressionNode* And();
     ExpressionNode* Relational();
     ExpressionNode* PlusMinus();
     ExpressionNode* TimesDivide();

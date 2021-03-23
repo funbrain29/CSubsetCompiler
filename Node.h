@@ -16,6 +16,8 @@ class AssignmentStatementNode;
 class AssignmentNode;
 class ExpressionNode;
 class CoutStatementNode;
+class IfStatementNode;
+class WhileStatementNode;
 class IntegerNode;
 class BinaryOperatorNode;
 class PlusNode;
@@ -28,6 +30,8 @@ class GreaterNode;
 class GreaterEqualNode;
 class EqualNode;
 class NotEqualNode;
+class AndNode;
+class OrNode;
 
 class Node {
     private:
@@ -230,6 +234,18 @@ class EqualNode: public BinaryOperatorNode {
 class NotEqualNode: public BinaryOperatorNode {
     public:
     NotEqualNode(ExpressionNode * left, ExpressionNode * right);
+    int Evaluate();
+};
+
+class AndNode: public BinaryOperatorNode {
+    public:
+    AndNode(ExpressionNode * left, ExpressionNode * right);
+    int Evaluate();
+};
+
+class OrNode: public BinaryOperatorNode {
+    public:
+    OrNode(ExpressionNode * left, ExpressionNode * right);
     int Evaluate();
 };
 

@@ -118,6 +118,40 @@ ExpressionNode::~ExpressionNode() {
     MSG("Deleting ExpressionNode\n");
 }
 
+// WhileStatementNode
+WhileStatementNode::WhileStatementNode(ExpressionNode *en, StatementNode *sn) {
+    mExpressionNode = en;
+    mStatementNode = sn;
+}
+
+void WhileStatementNode::Interpret() {
+    while (mExpressionNode->Evaluate() != 0) {
+        mStatementNode->Interpret();
+    }
+}
+
+WhileStatementNode::~WhileStatementNode() {
+    delete mExpressionNode;
+    delete mStatementNode;
+}
+
+// IfStatementNode
+IfStatementNode::IfStatementNode(ExpressionNode *en, StatementNode *sn) {
+    mExpressionNode = en;
+    mStatementNode = sn;
+}
+
+void IfStatementNode::Interpret() {
+    if (mExpressionNode->Evaluate() != 0) {
+        mStatementNode->Interpret();
+    }
+}
+
+IfStatementNode::~IfStatementNode() {
+    delete mExpressionNode;
+    delete mStatementNode;
+}
+
 // IntegerNode
 IntegerNode::IntegerNode(int i ) {
     mInt = i;
@@ -159,116 +193,97 @@ BinaryOperatorNode::~BinaryOperatorNode() {
 }
 
 // PlusNode
+PlusNode::PlusNode(ExpressionNode * left, ExpressionNode * right)
+: BinaryOperatorNode(left, right) {}
+
 int PlusNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() + mRightExpressionNode->Evaluate();
 }
 
-PlusNode::PlusNode(ExpressionNode * left, ExpressionNode * right)
+// MinusNode
+MinusNode::MinusNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}
 
-// MinusNode
 int MinusNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() - mRightExpressionNode->Evaluate();
 }
 
-MinusNode::MinusNode(ExpressionNode * left, ExpressionNode * right)
+// TimesNode
+TimesNode::TimesNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}
 
-// TimesNode
 int TimesNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() * mRightExpressionNode->Evaluate();
 }
 
-TimesNode::TimesNode(ExpressionNode * left, ExpressionNode * right)
+// DivideNode
+DivideNode::DivideNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}
 
-// DivideNode
 int DivideNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() / mRightExpressionNode->Evaluate();
 }
 
-DivideNode::DivideNode(ExpressionNode * left, ExpressionNode * right)
+// LessNode
+LessNode::LessNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}
 
-// LessNode
 int LessNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() < mRightExpressionNode->Evaluate();
 }
 
-LessNode::LessNode(ExpressionNode * left, ExpressionNode * right)
+// LessEqualNode
+LessEqualNode::LessEqualNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}
 
-// LessEqualNode
 int LessEqualNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() <= mRightExpressionNode->Evaluate();
 }
 
-LessEqualNode::LessEqualNode(ExpressionNode * left, ExpressionNode * right)
+// GreaterNode
+GreaterNode::GreaterNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}
 
-// GreaterNode
 int GreaterNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() > mRightExpressionNode->Evaluate();
 }
 
-GreaterNode::GreaterNode(ExpressionNode * left, ExpressionNode * right)
+// GreaterEqualNode
+GreaterEqualNode::GreaterEqualNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}
 
-// GreaterEqualNode
 int GreaterEqualNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() >= mRightExpressionNode->Evaluate();
 }
 
-GreaterEqualNode::GreaterEqualNode(ExpressionNode * left, ExpressionNode * right)
+// EqualNode
+EqualNode::EqualNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}
 
-// EqualNode
 int EqualNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() == mRightExpressionNode->Evaluate();
 }
 
-EqualNode::EqualNode(ExpressionNode * left, ExpressionNode * right)
+// NotEqualNode
+NotEqualNode::NotEqualNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}
 
-// NotEqualNode
 int NotEqualNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() != mRightExpressionNode->Evaluate();
 }
 
-NotEqualNode::NotEqualNode(ExpressionNode * left, ExpressionNode * right)
+// AndNode
+AndNode::AndNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}
 
-
-// IfStatementNode
-IfStatementNode::IfStatementNode(ExpressionNode *en, StatementNode *sn) {
-    mExpressionNode = en;
-    mStatementNode = sn;
+int AndNode::Evaluate() {
+    return mLeftExpressionNode->Evaluate() && mRightExpressionNode->Evaluate();
 }
 
-void IfStatementNode::Interpret() {
-    if (mExpressionNode->Evaluate() != 0) {
-        mStatementNode->Interpret();
-    }
-}
+// OrNode
+OrNode::OrNode(ExpressionNode * left, ExpressionNode * right)
+: BinaryOperatorNode(left, right) {}
 
-IfStatementNode::~IfStatementNode() {
-    delete mExpressionNode;
-    delete mStatementNode;
-}
-
-// WhileStatementNode
-WhileStatementNode::WhileStatementNode(ExpressionNode *en, StatementNode *sn) {
-    mExpressionNode = en;
-    mStatementNode = sn;
-}
-
-void WhileStatementNode::Interpret() {
-    while (mExpressionNode->Evaluate() != 0) {
-        mStatementNode->Interpret();
-    }
-}
-
-WhileStatementNode::~WhileStatementNode() {
-    delete mExpressionNode;
-    delete mStatementNode;
+int OrNode::Evaluate() {
+    return mLeftExpressionNode->Evaluate() || mRightExpressionNode->Evaluate();
 }

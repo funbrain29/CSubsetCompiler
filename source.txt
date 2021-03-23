@@ -9,10 +9,11 @@ void main() {
 	div = 90 / 400;
 	int eql;
 	eql = 90 == 400;
-	if (sum == 435) {
+	if (sum == 435 && times == 36000) {
 		cout << sum;
 	}
-	while (sum == 436) {
-		cout << sum;
+	while (sum == 436 || div != 1) {
+		div = 1;
 	}
+		cout << div;
 }
