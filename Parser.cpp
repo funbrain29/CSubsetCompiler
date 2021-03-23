@@ -116,10 +116,8 @@ IfStatementNode* ParserClass::If() {
 	Match(LPAREN_TOKEN);
 	ExpressionNode* en = Expression();
 	Match(RPAREN_TOKEN);
-	Match(LCURLY_TOKEN);
-	StatementNode* sn = Statement();
-	Match(RCURLY_TOKEN);
-	IfStatementNode* in = new IfStatementNode(en,sn);
+	BlockNode* bn = Block();
+	IfStatementNode* in = new IfStatementNode(en,bn);
 	return in;
 }
 
@@ -128,10 +126,8 @@ WhileStatementNode* ParserClass::While() {
 	Match(LPAREN_TOKEN);
 	ExpressionNode* en = Expression();
 	Match(RPAREN_TOKEN);
-	Match(LCURLY_TOKEN);
-	StatementNode* sn = Statement();
-	Match(RCURLY_TOKEN);
-	WhileStatementNode* in = new WhileStatementNode(en,sn);
+	BlockNode* bn = Block();
+	WhileStatementNode* in = new WhileStatementNode(en,bn);
 	return in;
 }
 

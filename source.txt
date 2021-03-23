@@ -13,7 +13,8 @@ void main() {
 		cout << sum;
 	}
 	while (sum == 436 || div != 1) {
-		div = 1;
-	}
 		cout << div;
+		div = 1;
+		cout << div;
+	}
 }
