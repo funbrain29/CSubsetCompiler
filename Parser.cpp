@@ -64,8 +64,22 @@ StatementNode* ParserClass::Statement() {
 	TokenType tokentype = tc.getTokenType();
 	MSG("---Statement token peeked: " << gTokenTypeNames[tokentype] << "\n\n");
 	if (tokentype == INT_TOKEN) {
-		DeclarationStatementNode* xsn = Declaration();
-		return xsn;
+		Match(INT_TOKEN);
+		IdentifierNode* in = Identifier();
+
+		TokenClass tc2;
+		MSG("\n---StatementDeclaration peeking\n");
+		tc2 = mScanner->PeekNextToken();
+		TokenType tokentype2 = tc2.getTokenType();
+		MSG("---StatementDeclaration token peeked: " << gTokenTypeNames[tokentype] << "\n\n");
+
+		if (tokentype2 == SEMICOLON_TOKEN) {
+			DeclarationStatementNode* xsn = Declaration(in);
+			return xsn;
+		} else {
+			DeclarationAssignmentStatementNode* xsn = DeclarationAssignment(in);
+			return xsn;
+		}
 	} else if (tokentype == IDENTIFIER_TOKEN) {
 		AssignmentStatementNode* xsn = Assignment();
 		return xsn;
@@ -85,11 +99,17 @@ StatementNode* ParserClass::Statement() {
 	return NULL;
 }
 
-DeclarationStatementNode* ParserClass::Declaration() {
-	Match(INT_TOKEN);
-	IdentifierNode* in = Identifier();
+DeclarationStatementNode* ParserClass::Declaration(IdentifierNode *in) {
 	Match(SEMICOLON_TOKEN);
 	DeclarationStatementNode* dsn = new DeclarationStatementNode(in);
+	return dsn;
+}
+
+DeclarationAssignmentStatementNode* ParserClass::DeclarationAssignment(IdentifierNode *in) {
+	Match(ASSIGNMENT_TOKEN);
+	ExpressionNode* en = Expression();
+	Match(SEMICOLON_TOKEN);
+	DeclarationAssignmentStatementNode* dsn = new DeclarationAssignmentStatementNode(in,en);
 	return dsn;
 }
 
@@ -162,7 +182,7 @@ ExpressionNode* ParserClass::Or() {
 }
 
 ExpressionNode* ParserClass::And() {
-	ExpressionNode* current = Relational();
+	ExpressionNode* current = BitwiseAnd();
 
 	MSG("\n---Or peeking\n");
 	TokenType tt = mScanner->PeekNextToken().GetTokenType();
@@ -170,7 +190,21 @@ ExpressionNode* ParserClass::And() {
 
 	if(tt == AND_TOKEN) {
 		Match(tt);
-		current = new OrNode(current,Relational());
+		current = new AndNode(current,BitwiseAnd());
+	}
+	return current;
+}
+
+ExpressionNode* ParserClass::BitwiseAnd() {
+	ExpressionNode* current = Relational();
+
+	MSG("\n---Or peeking\n");
+	TokenType tt = mScanner->PeekNextToken().GetTokenType();
+	MSG("---Or token peeked: " << gTokenTypeNames[tt] << "\n\n");
+
+	if(tt == BITWISE_TOKEN) {
+		Match(tt);
+		current = new BitwiseAndNode(current,Relational());
 	}
 	return current;
 }

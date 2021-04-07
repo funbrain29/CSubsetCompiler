@@ -83,6 +83,23 @@ DeclarationStatementNode::~DeclarationStatementNode() {
     delete mIdentifierNode;
 }
 
+// DelcarationAssignmentNode
+DeclarationAssignmentStatementNode::DeclarationAssignmentStatementNode(IdentifierNode *p, ExpressionNode *e = NULL) {
+    mIdentifierNode = p;
+    mExpressionNode = e;
+}
+
+void DeclarationAssignmentStatementNode::Interpret() {
+    mIdentifierNode->DeclareVariable();
+    mIdentifierNode->SetValue(mExpressionNode->Evaluate());
+}
+
+DeclarationAssignmentStatementNode::~DeclarationAssignmentStatementNode() {
+    MSG("DeclarationStatementAssignmentNode Deleting IdentifierNode and ExpressionNode\n");
+    delete mIdentifierNode;
+    delete mExpressionNode;
+}
+
 // AssignmentStatementNode
 AssignmentStatementNode::AssignmentStatementNode(IdentifierNode *in, ExpressionNode *en) {
     mIdentifierNode = in;
@@ -286,4 +303,12 @@ OrNode::OrNode(ExpressionNode * left, ExpressionNode * right)
 
 int OrNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() || mRightExpressionNode->Evaluate();
+}
+
+// BitwiseAndNode
+BitwiseAndNode::BitwiseAndNode(ExpressionNode * left, ExpressionNode * right)
+: BinaryOperatorNode(left, right) {}
+
+int BitwiseAndNode::Evaluate() {
+    return mLeftExpressionNode->Evaluate() & mRightExpressionNode->Evaluate();
 }

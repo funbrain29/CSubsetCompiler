@@ -12,7 +12,8 @@ private:
     BlockNode* Block();
     StatementGroupNode* StatementGroup();
     StatementNode* Statement();
-    DeclarationStatementNode* Declaration();
+    DeclarationStatementNode* Declaration(IdentifierNode *in);
+    DeclarationAssignmentStatementNode* DeclarationAssignment(IdentifierNode *in);
     AssignmentStatementNode* Assignment();
     CoutStatementNode* Cout();
     IfStatementNode* If();
@@ -22,6 +23,7 @@ private:
     ExpressionNode* Expression();
     ExpressionNode* Or();
     ExpressionNode* And();
+    ExpressionNode* BitwiseAnd();
     ExpressionNode* Relational();
     ExpressionNode* PlusMinus();
     ExpressionNode* TimesDivide();

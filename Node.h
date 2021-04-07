@@ -10,6 +10,7 @@ class BlockNode;
 class StatementGroupNode;
 class StatementNode;
 class DeclarationStatementNode;
+class DeclarationAssignmentStatementNode;
 class DeclarationNode;
 class IdentifierNode;
 class AssignmentStatementNode;
@@ -31,6 +32,7 @@ class GreaterEqualNode;
 class EqualNode;
 class NotEqualNode;
 class AndNode;
+class BitwiseAndNode;
 class OrNode;
 
 class Node {
@@ -94,6 +96,18 @@ class DeclarationStatementNode: public StatementNode {
     virtual void Interpret();
     ~DeclarationStatementNode();
 };
+
+class DeclarationAssignmentStatementNode: public StatementNode {
+    private:
+    IdentifierNode *mIdentifierNode;
+    ExpressionNode *mExpressionNode;
+    public:
+    DeclarationAssignmentStatementNode(IdentifierNode *p, ExpressionNode *e);
+    virtual void Interpret();
+    ~DeclarationAssignmentStatementNode();
+};
+
+
 
 class AssignmentStatementNode: public StatementNode {
     private:
@@ -240,6 +254,12 @@ class NotEqualNode: public BinaryOperatorNode {
 class AndNode: public BinaryOperatorNode {
     public:
     AndNode(ExpressionNode * left, ExpressionNode * right);
+    int Evaluate();
+};
+
+class BitwiseAndNode: public BinaryOperatorNode {
+    public:
+    BitwiseAndNode(ExpressionNode * left, ExpressionNode * right);
     int Evaluate();
 };
 

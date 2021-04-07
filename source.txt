@@ -1,6 +1,6 @@
 void main() {
-	int sum;
-	sum = 35 + 400;
+	int sum = 35 + 400;
+	// sum = 35 + 400;
 	int difference;
 	difference = 90 - 400;
 	int times;
@@ -9,12 +9,28 @@ void main() {
 	div = 90 / 400;
 	int eql;
 	eql = 90 == 400;
+
 	if (sum == 435 && times == 36000) {
 		cout << sum;
 	}
+
 	while (sum == 436 || div != 1) {
 		cout << div;
 		div = 1;
 		cout << div;
 	}
+
+	int a = sum & 3;
+	int b = sum & 3 < 2;
+	int c = sum & 3 > 2;
+
+	cout << a;
+	cout << b;
+	cout << c;
+
+	int x = sum & 3 && 1;
+	int y = sum & 3 && 3;
+
+	cout << x;
+	cout << y;
 }

@@ -83,6 +83,7 @@ StateMachineClass::StateMachineClass() {
     // Other Operators:
     mCorrespondingTokenTypes[INSERTION_STATE] = INSERTION_TOKEN;
     mCorrespondingTokenTypes[ASSIGNMENT_STATE] = ASSIGNMENT_TOKEN;
+    mCorrespondingTokenTypes[AMP_STATE] = BITWISE_TOKEN;
     mCorrespondingTokenTypes[PLUS_STATE] = PLUS_TOKEN;
     mCorrespondingTokenTypes[MINUS_STATE] = MINUS_TOKEN;
     mCorrespondingTokenTypes[TIMES_STATE] = TIMES_TOKEN;
