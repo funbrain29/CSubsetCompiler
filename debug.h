@@ -1,4 +1,4 @@
-#define ShowMessages 1
+#define ShowMessages 0
 
 #if ShowMessages == 1
 #define MSG(X) std::cout << X

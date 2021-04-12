@@ -1,4 +1,5 @@
 void main() {
+	/*
 	int sum = 35 + 400;
 	// sum = 35 + 400;
 	int difference;
@@ -28,6 +29,8 @@ void main() {
 	cout << b;
 	cout << c;
 
+	*/
+	int sum = 35 + 400;
 	int x = sum & 3 && 1;
 	int y = sum & 3 && 3;
 

@@ -4,5 +4,6 @@
 *.exe
 
 .vscode/
-.vs/*
-machineCode/*
+.vs/
+Debug/
+Instructions/

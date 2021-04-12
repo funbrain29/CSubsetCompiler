@@ -17,7 +17,6 @@ int main() {
 #include "test.h"
 
 int main() {
-    /*
     std::cout << "--Running Token Test--\n";
     if (testToken() == 0) {
         std::cout << "--Token Test Finished--\n";
@@ -34,7 +33,6 @@ int main() {
     if (testNodes() == 0) {
         std::cout << "--Nodes Test Finished--\n";
     };
-    */
     if (testParser() == 0) {
         std::cout << "--Parser Test Finished--\n";
     };
