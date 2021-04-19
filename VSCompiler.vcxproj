@@ -140,16 +140,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="debug.h" />
+    <ClInclude Include="Functions.h" />
     <ClInclude Include="Instructions.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Scanner.h" />
     <ClInclude Include="StateMachine.h" />
     <ClInclude Include="Symbol.h" />
-    <ClInclude Include="test.h" />
     <ClInclude Include="Token.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Functions.cpp" />
     <ClCompile Include="Instructions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Node.cpp" />
@@ -157,7 +158,6 @@
     <ClCompile Include="Scanner.cpp" />
     <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="Symbol.cpp" />
-    <ClCompile Include="test.cpp" />
     <ClCompile Include="Token.cpp" />
   </ItemGroup>
   <ItemGroup>

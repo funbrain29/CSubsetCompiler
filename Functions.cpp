@@ -1,4 +1,56 @@
-#include "test.h"
+#include "Functions.h"
+
+void CodeAndExecute(std::string filename, int flag) {
+    // Create scanner, symbol table, and parser objects.
+    ScannerClass scanner(filename);
+    SymbolTableClass symbolTable;
+    ParserClass parser(&scanner, &symbolTable);
+
+    // Do the parsing, which results in a parse tree.
+    StartNode * sn = parser.Start();
+
+    // Create the machine code instructions from the parse tree
+    InstructionsClass machineCode;
+    sn->Code(machineCode);
+    machineCode.Finish();
+    if (flag) {
+        machineCode.PrintAllMachineCodes();
+    }
+
+    // Execute the machine code instructions previously created
+    machineCode.Execute();
+
+    // cleanup recursively
+    delete sn;
+}
+
+// run tests
+void runTests() {
+    std::cout << "--Running Token Test--\n";
+    if (testToken() == 0) {
+        std::cout << "--Token Test Finished--\n";
+    };
+    std::cout << "\n--Running Scanner Test--\n";
+    if (testScanner() == 0) {
+        std::cout << "--Scanner Test Finished--\n";
+    };
+    std::cout << "\n--Running SymbolClass Test--\n";
+    if (testSymbolClass() == 0) {
+        std::cout << "--SymbolClass Test Finished--\n";
+    };
+    std::cout << "\n--Running Nodes Test--\n";
+    if (testNodes() == 0) {
+        std::cout << "--Nodes Test Finished--\n";
+    };
+    std::cout << "\n--Running Parser Test--\n";
+    if (testParser() == 0) {
+        std::cout << "\n--Parser Test Finished--\n";
+    };
+    std::cout << "\n--Running MachineCode Test--\n";
+    if (testMachineCode() == 0) {
+        std::cout << "--MachineCode Test Finished--\n";
+    };
+}
 
 // test MachineCode
 int testMachineCode() {
