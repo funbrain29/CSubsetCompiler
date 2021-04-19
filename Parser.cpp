@@ -195,7 +195,10 @@ ExpressionNode* ParserClass::And() {
 	return current;
 }
 
+// Bitwise and currently nonfunctional, no machine code equal
 ExpressionNode* ParserClass::BitwiseAnd() {
+	return Relational();
+	/*
 	ExpressionNode* current = Relational();
 
 	MSG("\n---Or peeking\n");
@@ -207,6 +210,7 @@ ExpressionNode* ParserClass::BitwiseAnd() {
 		current = new BitwiseAndNode(current,Relational());
 	}
 	return current;
+	*/
 }
 
 ExpressionNode* ParserClass::Relational() {

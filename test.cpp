@@ -1,5 +1,29 @@
 #include "test.h"
 
+// test MachineCode
+int testMachineCode() {
+    // Create scanner, symbol table, and parser objects.
+    ScannerClass scanner("source.txt");
+    SymbolTableClass symbolTable;
+    ParserClass parser(&scanner, &symbolTable);
+
+    // Do the parsing, which results in a parse tree.
+    StartNode * sn = parser.Start();
+
+    // Create the machine code instructions from the parse tree
+    InstructionsClass machineCode;
+    sn->Code(machineCode);
+    machineCode.Finish();
+
+    // Execute the machine code instructions previously created
+    machineCode.Execute();
+
+    // cleanup recursively
+    delete sn;
+
+    return 0;
+}
+
 // test Parser
 int testParser() {
     ScannerClass scanner("source.txt");

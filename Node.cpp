@@ -13,6 +13,10 @@ void StartNode::Interpret() {
     mProgramNode->Interpret();
 }
 
+void StartNode::Code(InstructionsClass &machineCode) {
+    mProgramNode->Code(machineCode);
+}
+
 StartNode::~StartNode() {
     MSG("StartNode Deleting ProgramNode\n");
     delete mProgramNode;
@@ -27,6 +31,10 @@ void ProgramNode::Interpret() {
     mBlockNode->Interpret();
 }
 
+void ProgramNode::Code(InstructionsClass &machineCode) {
+    mBlockNode->Code(machineCode);
+}
+
 ProgramNode::~ProgramNode() {
     MSG("ProgramNode Deleting BlockNode\n");
     delete mBlockNode;
@@ -39,6 +47,10 @@ BlockNode::BlockNode(StatementGroupNode *s) {
 
 void BlockNode::Interpret() {
     mStatementGroupNode->Interpret();
+}
+
+void BlockNode::Code(InstructionsClass &machineCode) {
+    mStatementGroupNode->Code(machineCode);
 }
 
 BlockNode::~BlockNode() {
@@ -56,6 +68,14 @@ void StatementGroupNode::Interpret() {
     int i = 0;
     for (it = mStatementNodes.begin(); it != mStatementNodes.end(); it++,i++ ) {
         mStatementNodes[i]->Interpret();
+    }
+}
+
+void StatementGroupNode::Code(InstructionsClass &machineCode) {
+    std::vector<StatementNode*>::iterator it;
+    int i = 0;
+    for (it = mStatementNodes.begin(); it != mStatementNodes.end(); it++,i++ ) {
+        mStatementNodes[i]->Code(machineCode);
     }
 }
 
@@ -78,6 +98,10 @@ void DeclarationStatementNode::Interpret() {
     mIdentifierNode->DeclareVariable();
 }
 
+void DeclarationStatementNode::Code(InstructionsClass &machineCode) {
+    mIdentifierNode->DeclareVariable();
+}
+
 DeclarationStatementNode::~DeclarationStatementNode() {
     MSG("DeclarationStatementNode Deleting IdentifierNode\n");
     delete mIdentifierNode;
@@ -92,6 +116,13 @@ DeclarationAssignmentStatementNode::DeclarationAssignmentStatementNode(Identifie
 void DeclarationAssignmentStatementNode::Interpret() {
     mIdentifierNode->DeclareVariable();
     mIdentifierNode->SetValue(mExpressionNode->Evaluate());
+}
+
+void DeclarationAssignmentStatementNode::Code(InstructionsClass &machineCode) {
+    mIdentifierNode->DeclareVariable();
+    mExpressionNode->CodeEvaluate(machineCode);
+    int index = mIdentifierNode->GetIndex();
+    machineCode.PopAndStore(index);
 }
 
 DeclarationAssignmentStatementNode::~DeclarationAssignmentStatementNode() {
@@ -110,6 +141,12 @@ void AssignmentStatementNode::Interpret() {
     mIdentifierNode->SetValue(mExpressionNode->Evaluate());
 }
 
+void AssignmentStatementNode::Code(InstructionsClass &machineCode) {
+    mExpressionNode->CodeEvaluate(machineCode);
+    int index = mIdentifierNode->GetIndex();
+    machineCode.PopAndStore(index);
+}
+
 AssignmentStatementNode::~AssignmentStatementNode() {
     MSG("AssignmentStatementNode Deleting IdentifierNode and ExpressionNode\n");
     delete mIdentifierNode;
@@ -122,34 +159,17 @@ CoutStatementNode::CoutStatementNode(ExpressionNode *en) {
 }
 
 void CoutStatementNode::Interpret() {
-    std::cout << mExpressionNode->Evaluate() << "\n";
+    std::cout << mExpressionNode->Evaluate() << " ";
+}
+
+void CoutStatementNode::Code(InstructionsClass &machineCode) {
+    mExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopAndWrite();
 }
 
 CoutStatementNode::~CoutStatementNode() {
     MSG("CoutStatementNode Deleting ExpressionNode\n");
     delete mExpressionNode;
-}
-
-// ExpressionNode
-ExpressionNode::~ExpressionNode() {
-    MSG("Deleting ExpressionNode\n");
-}
-
-// WhileStatementNode
-WhileStatementNode::WhileStatementNode(ExpressionNode *en, StatementNode *sn) {
-    mExpressionNode = en;
-    mStatementNode = sn;
-}
-
-void WhileStatementNode::Interpret() {
-    while (mExpressionNode->Evaluate() != 0) {
-        mStatementNode->Interpret();
-    }
-}
-
-WhileStatementNode::~WhileStatementNode() {
-    delete mExpressionNode;
-    delete mStatementNode;
 }
 
 // IfStatementNode
@@ -164,14 +184,60 @@ void IfStatementNode::Interpret() {
     }
 }
 
+void IfStatementNode::Code(InstructionsClass &machineCode) {
+    mExpressionNode->CodeEvaluate(machineCode);
+    unsigned char * InsertAddress = machineCode.SkipIfZeroStack();
+    unsigned char * address1 = machineCode.GetAddress();
+    mStatementNode->Code(machineCode);
+    unsigned char * address2 = machineCode.GetAddress();
+    machineCode.SetOffset(InsertAddress, (int)(address2-address1));
+}
+
 IfStatementNode::~IfStatementNode() {
     delete mExpressionNode;
     delete mStatementNode;
 }
 
+// WhileStatementNode
+WhileStatementNode::WhileStatementNode(ExpressionNode *en, StatementNode *sn) {
+    mExpressionNode = en;
+    mStatementNode = sn;
+}
+
+void WhileStatementNode::Interpret() {
+    while (mExpressionNode->Evaluate() != 0) {
+        mStatementNode->Interpret();
+    }
+}
+void WhileStatementNode::Code(InstructionsClass &machineCode) {
+    unsigned char * address1 = machineCode.GetAddress();
+    mExpressionNode->CodeEvaluate(machineCode);
+    unsigned char * InsertAddressToSkip = machineCode.SkipIfZeroStack();
+    unsigned char * address2 = machineCode.GetAddress();
+    mStatementNode->Code(machineCode);
+    unsigned char * InsertAddressToJump = machineCode.Jump();
+    unsigned char * address3 = machineCode.GetAddress();
+    machineCode.SetOffset(InsertAddressToSkip, (int)(address3-address2));
+    machineCode.SetOffset(InsertAddressToJump, (int)(address1-address3));
+}
+
+WhileStatementNode::~WhileStatementNode() {
+    delete mExpressionNode;
+    delete mStatementNode;
+}
+
+// ExpressionNode
+ExpressionNode::~ExpressionNode() {
+    MSG("Deleting ExpressionNode\n");
+}
+
 // IntegerNode
 IntegerNode::IntegerNode(int i ) {
     mInt = i;
+}
+
+void IntegerNode::CodeEvaluate(InstructionsClass &machineCode) {
+    machineCode.PushValue(mInt);
 }
 
 // IdentifierNode
@@ -196,6 +262,10 @@ int IdentifierNode::Evaluate() {
     return mSymbolTable->GetValue(mLabel);
 }
 
+void IdentifierNode::CodeEvaluate(InstructionsClass &machineCode) {
+    machineCode.PushVariable(this->GetIndex());
+}
+
 // BinaryOperatorNode
 BinaryOperatorNode::BinaryOperatorNode(ExpressionNode *left, ExpressionNode *right) {
     mLeftExpressionNode = left;
@@ -217,12 +287,24 @@ int PlusNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() + mRightExpressionNode->Evaluate();
 }
 
+void PlusNode::CodeEvaluate(InstructionsClass &machineCode) {
+    mLeftExpressionNode->CodeEvaluate(machineCode);
+    mRightExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopAddPush();
+}
+
 // MinusNode
 MinusNode::MinusNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}
 
 int MinusNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() - mRightExpressionNode->Evaluate();
+}
+
+void MinusNode::CodeEvaluate(InstructionsClass &machineCode) {
+    mLeftExpressionNode->CodeEvaluate(machineCode);
+    mRightExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopSubPush();
 }
 
 // TimesNode
@@ -233,12 +315,24 @@ int TimesNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() * mRightExpressionNode->Evaluate();
 }
 
+void TimesNode::CodeEvaluate(InstructionsClass &machineCode) {
+    mLeftExpressionNode->CodeEvaluate(machineCode);
+    mRightExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopMulPush();
+}
+
 // DivideNode
 DivideNode::DivideNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}
 
 int DivideNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() / mRightExpressionNode->Evaluate();
+}
+
+void DivideNode::CodeEvaluate(InstructionsClass &machineCode) {
+    mLeftExpressionNode->CodeEvaluate(machineCode);
+    mRightExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopDivPush();
 }
 
 // LessNode
@@ -249,12 +343,24 @@ int LessNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() < mRightExpressionNode->Evaluate();
 }
 
+void LessNode::CodeEvaluate(InstructionsClass &machineCode) {
+    mLeftExpressionNode->CodeEvaluate(machineCode);
+    mRightExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopLessPush();
+}
+
 // LessEqualNode
 LessEqualNode::LessEqualNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}
 
 int LessEqualNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() <= mRightExpressionNode->Evaluate();
+}
+
+void LessEqualNode::CodeEvaluate(InstructionsClass &machineCode) {
+    mLeftExpressionNode->CodeEvaluate(machineCode);
+    mRightExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopLessEqualPush();
 }
 
 // GreaterNode
@@ -265,12 +371,24 @@ int GreaterNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() > mRightExpressionNode->Evaluate();
 }
 
+void GreaterNode::CodeEvaluate(InstructionsClass &machineCode) {
+    mLeftExpressionNode->CodeEvaluate(machineCode);
+    mRightExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopGreaterPush();
+}
+
 // GreaterEqualNode
 GreaterEqualNode::GreaterEqualNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}
 
 int GreaterEqualNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() >= mRightExpressionNode->Evaluate();
+}
+
+void GreaterEqualNode::CodeEvaluate(InstructionsClass &machineCode) {
+    mLeftExpressionNode->CodeEvaluate(machineCode);
+    mRightExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopGreaterEqualPush();
 }
 
 // EqualNode
@@ -281,12 +399,24 @@ int EqualNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() == mRightExpressionNode->Evaluate();
 }
 
+void EqualNode::CodeEvaluate(InstructionsClass &machineCode) {
+    mLeftExpressionNode->CodeEvaluate(machineCode);
+    mRightExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopEqualPush();
+}
+
 // NotEqualNode
 NotEqualNode::NotEqualNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}
 
 int NotEqualNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() != mRightExpressionNode->Evaluate();
+}
+
+void NotEqualNode::CodeEvaluate(InstructionsClass &machineCode) {
+    mLeftExpressionNode->CodeEvaluate(machineCode);
+    mRightExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopNotEqualPush();
 }
 
 // AndNode
@@ -297,12 +427,24 @@ int AndNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() && mRightExpressionNode->Evaluate();
 }
 
+void AndNode::CodeEvaluate(InstructionsClass &machineCode) {
+    mLeftExpressionNode->CodeEvaluate(machineCode);
+    mRightExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopAndPush();
+}
+
 // OrNode
 OrNode::OrNode(ExpressionNode * left, ExpressionNode * right)
 : BinaryOperatorNode(left, right) {}
 
 int OrNode::Evaluate() {
     return mLeftExpressionNode->Evaluate() || mRightExpressionNode->Evaluate();
+}
+
+void OrNode::CodeEvaluate(InstructionsClass &machineCode) {
+    mLeftExpressionNode->CodeEvaluate(machineCode);
+    mRightExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopOrPush();
 }
 
 // BitwiseAndNode

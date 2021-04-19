@@ -1,17 +1,54 @@
-void main() {
-	/*
-	int sum = 35 + 400;
-	// sum = 35 + 400;
-	int difference;
-	difference = 90 - 400;
-	int times;
-	times = 90 * 400;
-	int div;
-	div = 90 / 400;
-	int eql;
-	eql = 90 == 400;
+void main()
+{
+	int sum;
+	sum = 400 + 35;
+	cout << sum;
 
-	if (sum == 435 && times == 36000) {
+	int difference;
+	difference = 400 - 35;
+	cout << difference;
+
+	int times;
+	times = 400 * 35;
+	cout << times;
+
+	int div;
+	div = 400 / 35;
+	cout << div;
+
+	int less;
+	less = 400 < 35;
+	cout << less;
+
+	int lessequal;
+	lessequal = 400 <= 35;
+	cout << lessequal;
+
+	int greater;
+	greater = 400 > 35;
+	cout << greater;
+
+	int greaterequal;
+	greaterequal = 400 >= 35;
+	cout << greaterequal;
+
+	int equal;
+	equal = 400 == 35;
+	cout << equal;
+
+	int notequal;
+	notequal = 400 != 35;
+	cout << notequal;
+
+	int or;
+	or = 400 || 35;
+	cout << or;
+
+	int and;
+	and = 400 && 35;
+	cout << and;
+
+	if (sum == 435 && times == 14000) {
 		cout << sum;
 	}
 
@@ -20,20 +57,4 @@ void main() {
 		div = 1;
 		cout << div;
 	}
-
-	int a = sum & 3;
-	int b = sum & 3 < 2;
-	int c = sum & 3 > 2;
-
-	cout << a;
-	cout << b;
-	cout << c;
-
-	*/
-	int sum = 35 + 400;
-	int x = sum & 3 && 1;
-	int y = sum & 3 && 3;
-
-	cout << x;
-	cout << y;
 }

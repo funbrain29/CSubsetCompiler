@@ -8,5 +8,6 @@ int testSymbolClass();
 int testScanner();
 int testToken();
 int testParser();
+int testMachineCode();
 
 #endif

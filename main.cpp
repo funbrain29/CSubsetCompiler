@@ -33,8 +33,13 @@ int main() {
     if (testNodes() == 0) {
         std::cout << "--Nodes Test Finished--\n";
     };
+    std::cout << "\n--Running Parser Test--\n";
     if (testParser() == 0) {
-        std::cout << "--Parser Test Finished--\n";
+        std::cout << "\n--Parser Test Finished--\n";
+    };
+    std::cout << "\n--Running MachineCode Test--\n";
+    if (testMachineCode() == 0) {
+        std::cout << "--MachineCode Test Finished--\n";
     };
     return 0;
 }
