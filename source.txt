@@ -1,7 +1,8 @@
 void main()
 {
 	int sum;
-	sum = 400 + 35;
+	sum = 400;
+	sum += 35;
 	cout << sum;
 
 	int difference;
@@ -47,6 +48,12 @@ void main()
 	int and;
 	and = 400 && 35;
 	cout << and;
+
+	cout << endl;
+
+	cout << sum << difference << times << div << less
+	<< lessequal << greater << greaterequal << equal
+	<< notequal << or << and << endl ;
 
 	if (sum == 435 && times == 14000) {
 		cout << sum;

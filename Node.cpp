@@ -132,6 +132,10 @@ DeclarationAssignmentStatementNode::~DeclarationAssignmentStatementNode() {
 }
 
 // AssignmentStatementNode
+AssignmentStatementNode::AssignmentStatementNode() {
+    // empty, needs to exist for PlusEqual/MinusEqual-StatementNode's
+}
+
 AssignmentStatementNode::AssignmentStatementNode(IdentifierNode *in, ExpressionNode *en) {
     mIdentifierNode = in;
     mExpressionNode = en;
@@ -153,23 +157,92 @@ AssignmentStatementNode::~AssignmentStatementNode() {
     delete mExpressionNode;
 }
 
-// CoutStatementNode
-CoutStatementNode::CoutStatementNode(ExpressionNode *en) {
+// PlusEqualsStatementNode
+PlusEqualsStatementNode::PlusEqualsStatementNode(IdentifierNode *in, ExpressionNode *en) {
+    mIdentifierNode = in;
     mExpressionNode = en;
 }
 
+void PlusEqualsStatementNode::Interpret() {
+    mIdentifierNode->SetValue(mIdentifierNode->Evaluate() + mExpressionNode->Evaluate());
+}
+
+void PlusEqualsStatementNode::Code(InstructionsClass &machineCode) {
+    mIdentifierNode->CodeEvaluate(machineCode);
+    mExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopAddPush();
+    int index = mIdentifierNode->GetIndex();
+    machineCode.PopAndStore(index);
+}
+
+PlusEqualsStatementNode::~PlusEqualsStatementNode() {
+    MSG("PlusEqualsStatementNode Deleting IdentifierNode and ExpressionNode\n");
+    delete mIdentifierNode;
+    delete mExpressionNode;
+}
+
+// MinusEqualsStatementNode
+MinusEqualsStatementNode::MinusEqualsStatementNode(IdentifierNode *in, ExpressionNode *en) {
+    mIdentifierNode = in;
+    mExpressionNode = en;
+}
+
+void MinusEqualsStatementNode::Interpret() {
+    mIdentifierNode->SetValue(mIdentifierNode->Evaluate() - mExpressionNode->Evaluate());
+}
+
+void MinusEqualsStatementNode::Code(InstructionsClass &machineCode) {
+    mIdentifierNode->CodeEvaluate(machineCode);
+    mExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopSubPush();
+    int index = mIdentifierNode->GetIndex();
+    machineCode.PopAndStore(index);
+}
+
+MinusEqualsStatementNode::~MinusEqualsStatementNode() {
+    MSG("PlusEqualsStatementNode Deleting IdentifierNode and ExpressionNode\n");
+    delete mIdentifierNode;
+    delete mExpressionNode;
+}
+
+// CoutStatementNode
+void CoutStatementNode::addExpression(ExpressionNode *en) {
+    mExpressionNodes.push_back(en);
+}
+
 void CoutStatementNode::Interpret() {
-    std::cout << mExpressionNode->Evaluate() << " ";
+    std::vector<ExpressionNode*>::iterator it;
+    int i = 0;
+    for (it = mExpressionNodes.begin(); it != mExpressionNodes.end(); it++,i++ ) {
+        if (mExpressionNodes[i]) {
+            std::cout << mExpressionNodes[i]->Evaluate() << " ";
+        } else {
+            std::cout << "\n";
+        }
+    }
 }
 
 void CoutStatementNode::Code(InstructionsClass &machineCode) {
-    mExpressionNode->CodeEvaluate(machineCode);
-    machineCode.PopAndWrite();
+    std::vector<ExpressionNode*>::iterator it;
+    int i = 0;
+    for (it = mExpressionNodes.begin(); it != mExpressionNodes.end(); it++,i++ ) {
+        if (mExpressionNodes[i]) {
+            mExpressionNodes[i]->CodeEvaluate(machineCode);
+            machineCode.PopAndWrite();
+        } else {
+            machineCode.WriteEndl();
+        }
+    }
 }
 
 CoutStatementNode::~CoutStatementNode() {
-    MSG("CoutStatementNode Deleting ExpressionNode\n");
-    delete mExpressionNode;
+    MSG("CoutStatementNode Deleting ExpressionNodes\n");
+    std::vector<ExpressionNode*>::iterator it;
+    int i = 0;
+    for (it = mExpressionNodes.begin(); it != mExpressionNodes.end(); it++,i++ ) {
+        MSG("CoutStatementNode Deleted ExpressionNode\n");
+        delete mExpressionNodes[i];
+    }
 }
 
 // IfStatementNode

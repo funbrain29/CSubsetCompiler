@@ -65,6 +65,9 @@ StateMachineClass::StateMachineClass() {
     mLegalMoves[ENDCOMMENT_STATE][DIVIDE_CHAR]= START_STATE;
     mLegalMoves[DIVIDE_STATE][DIVIDE_CHAR]= SCOMMENT_STATE;
     mLegalMoves[SCOMMENT_STATE][NEWLINE_CHAR]= START_STATE;
+    // += and -= states
+    mLegalMoves[PLUS_STATE][EQUAL_CHAR]= PLUSEQU_STATE;
+    mLegalMoves[MINUS_STATE][EQUAL_CHAR]= MINUSEQU_STATE;
 
     //Corresponding TokenTypes
     for(int i=0; i<LAST_STATE; i++) {
@@ -88,6 +91,8 @@ StateMachineClass::StateMachineClass() {
     mCorrespondingTokenTypes[MINUS_STATE] = MINUS_TOKEN;
     mCorrespondingTokenTypes[TIMES_STATE] = TIMES_TOKEN;
     mCorrespondingTokenTypes[DIVIDE_STATE] = DIVIDE_TOKEN;
+    mCorrespondingTokenTypes[PLUSEQU_STATE] = PLUSEQUALS_TOKEN;
+    mCorrespondingTokenTypes[MINUSEQU_STATE] = MINUSEQUALS_TOKEN;
     //Other Characters:
     mCorrespondingTokenTypes[SEMICOLON_STATE] = SEMICOLON_TOKEN;
     mCorrespondingTokenTypes[LPAREN_STATE] = LPAREN_TOKEN;

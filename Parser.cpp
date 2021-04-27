@@ -115,19 +115,76 @@ DeclarationAssignmentStatementNode* ParserClass::DeclarationAssignment(Identifie
 
 AssignmentStatementNode* ParserClass::Assignment() {
 	IdentifierNode* in = Identifier();
-	Match(ASSIGNMENT_TOKEN);
-	ExpressionNode* en = Expression();
-	Match(SEMICOLON_TOKEN);
-	AssignmentStatementNode* asn = new AssignmentStatementNode(in,en);
-	return asn;
+
+	// check for =, +=, or -=
+
+	TokenClass tc;
+	MSG("\n---CoutStatement peeking\n");
+	tc = mScanner->PeekNextToken();
+	TokenType tokentype = tc.getTokenType();
+	MSG("---CoutStatement token peeked: " << gTokenTypeNames[tokentype] << "\n\n");
+
+	if (tokentype == PLUSEQUALS_TOKEN) {
+		Match(PLUSEQUALS_TOKEN);
+		ExpressionNode* en = Expression();
+		Match(SEMICOLON_TOKEN);
+		PlusEqualsStatementNode* asn = new PlusEqualsStatementNode(in,en);
+		return asn;
+
+	} else if (tokentype == MINUSEQUALS_TOKEN) {
+		Match(MINUSEQUALS_TOKEN);
+		ExpressionNode* en = Expression();
+		Match(SEMICOLON_TOKEN);
+		MinusEqualsStatementNode* asn = new MinusEqualsStatementNode(in,en);
+		return asn;
+
+	} else {
+		Match(ASSIGNMENT_TOKEN);
+		ExpressionNode* en = Expression();
+		Match(SEMICOLON_TOKEN);
+		AssignmentStatementNode* asn = new AssignmentStatementNode(in,en);
+		return asn;
+	}
+	return NULL;
 }
 
 CoutStatementNode* ParserClass::Cout() {
 	Match(COUT_TOKEN);
 	Match(INSERTION_TOKEN);
-	ExpressionNode* en = Expression();
+	CoutStatementNode* cn = new CoutStatementNode();
+
+	for (;;) {
+		// peek first time to check if expression or endl
+		TokenClass tc;
+		MSG("\n---CoutStatement peeking\n");
+		tc = mScanner->PeekNextToken();
+		TokenType tokentype = tc.getTokenType();
+		MSG("---CoutStatement token peeked: " << gTokenTypeNames[tokentype] << "\n\n");
+
+		if (tokentype == ENDL_TOKEN) {
+			Match(ENDL_TOKEN);
+			ExpressionNode *p = NULL;
+			cn->addExpression(p);
+		} else {
+			ExpressionNode* en = Expression();
+			cn->addExpression(en);
+		}
+
+		// peek second time to check if semicolon or if there is more to print
+		MSG("\n---CoutStatement peeking\n");
+		tc = mScanner->PeekNextToken();
+		tokentype = tc.getTokenType();
+		MSG("---CoutStatement token peeked: " << gTokenTypeNames[tokentype] << "\n\n");
+
+		if (tokentype == SEMICOLON_TOKEN) {
+			break;
+		} else if (tokentype == INSERTION_TOKEN) {
+			Match(INSERTION_TOKEN);
+			// loop again
+		}
+	}
+
 	Match(SEMICOLON_TOKEN);
-	CoutStatementNode* cn = new CoutStatementNode(en);
 	return cn;
 }
 

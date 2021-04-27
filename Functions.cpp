@@ -25,13 +25,14 @@ void CodeAndExecute(std::string filename, int flag) {
 }
 
 // run tests
-void runTests() {
+void runTests(std::string filename) {
+    /*
     std::cout << "--Running Token Test--\n";
     if (testToken() == 0) {
         std::cout << "--Token Test Finished--\n";
     };
     std::cout << "\n--Running Scanner Test--\n";
-    if (testScanner() == 0) {
+    if (testScanner(filename) == 0) {
         std::cout << "--Scanner Test Finished--\n";
     };
     std::cout << "\n--Running SymbolClass Test--\n";
@@ -42,20 +43,21 @@ void runTests() {
     if (testNodes() == 0) {
         std::cout << "--Nodes Test Finished--\n";
     };
+    */
     std::cout << "\n--Running Parser Test--\n";
-    if (testParser() == 0) {
+    if (testParser(filename) == 0) {
         std::cout << "\n--Parser Test Finished--\n";
     };
     std::cout << "\n--Running MachineCode Test--\n";
-    if (testMachineCode() == 0) {
+    if (testMachineCode(filename) == 0) {
         std::cout << "--MachineCode Test Finished--\n";
     };
 }
 
 // test MachineCode
-int testMachineCode() {
+int testMachineCode(std::string filename) {
     // Create scanner, symbol table, and parser objects.
-    ScannerClass scanner("source.txt");
+    ScannerClass scanner(filename);
     SymbolTableClass symbolTable;
     ParserClass parser(&scanner, &symbolTable);
 
@@ -77,8 +79,8 @@ int testMachineCode() {
 }
 
 // test Parser
-int testParser() {
-    ScannerClass scanner("source.txt");
+int testParser(std::string filename) {
+    ScannerClass scanner(filename);
     SymbolTableClass symboltable;
     ParserClass pc = ParserClass(&scanner,&symboltable);
     StartNode* sn = pc.Start();
@@ -158,8 +160,8 @@ int testSymbolClass() {
 }
 
 // test scanner
-int testScanner() {
-    ScannerClass scanner("source.txt");
+int testScanner(std::string filename) {
+    ScannerClass scanner(filename);
     TokenClass currentToken;
     TokenClass endToken(ENDFILE_TOKEN,"");
 

@@ -27,6 +27,8 @@ void TokenClass::CheckReserved() {
         mType = IF_TOKEN;
     } else if (GetLexeme() == "while") {
         mType = WHILE_TOKEN;
+    } else if (GetLexeme() == "endl") {
+        mType = ENDL_TOKEN;
     }
 }
 

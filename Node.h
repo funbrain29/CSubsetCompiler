@@ -115,26 +115,48 @@ class DeclarationAssignmentStatementNode: public StatementNode {
     ~DeclarationAssignmentStatementNode();
 };
 
-
-
 class AssignmentStatementNode: public StatementNode {
     private:
     IdentifierNode *mIdentifierNode;
     ExpressionNode *mExpressionNode;
 
     public:
+    AssignmentStatementNode();
     AssignmentStatementNode(IdentifierNode *in, ExpressionNode *en);
     virtual void Code(InstructionsClass &machineCode);
     virtual void Interpret();
     virtual ~AssignmentStatementNode();
 };
 
+class PlusEqualsStatementNode: public AssignmentStatementNode {
+    private:
+    IdentifierNode *mIdentifierNode;
+    ExpressionNode *mExpressionNode;
+    public:
+    PlusEqualsStatementNode();
+    PlusEqualsStatementNode(IdentifierNode *in, ExpressionNode *en);
+    virtual void Code(InstructionsClass &machineCode);
+    virtual void Interpret();
+    virtual ~PlusEqualsStatementNode();
+};
+
+class MinusEqualsStatementNode: public AssignmentStatementNode {
+    private:
+    IdentifierNode *mIdentifierNode;
+    ExpressionNode *mExpressionNode;
+    public:
+    MinusEqualsStatementNode(IdentifierNode *in, ExpressionNode *en);
+    virtual void Code(InstructionsClass &machineCode);
+    virtual void Interpret();
+    virtual ~MinusEqualsStatementNode();
+};
+
 class CoutStatementNode: public StatementNode {
     private:
-    ExpressionNode *mExpressionNode;
+    std::vector<ExpressionNode*> mExpressionNodes;
 
     public:
-    CoutStatementNode(ExpressionNode *en);
+    void addExpression(ExpressionNode *en);
     virtual void Code(InstructionsClass &machineCode);
     virtual void Interpret();
     ~CoutStatementNode();
