@@ -96,11 +96,11 @@ InstructionsClass::InstructionsClass()
 	int pointerSize = sizeof(p);
 	if (pointerSize==4)
 	{
-		cout << "Compiling for 32 bit" << endl;
+		//cout << "Compiling for 32 bit" << endl;
 	}
 	else if(sizeof(p)==8)
 	{
-		cout << "Compiling for 64 bit" << endl;
+		//cout << "Compiling for 64 bit" << endl;
 	}
 
 	mData[10] = 2000;
@@ -115,7 +115,7 @@ void InstructionsClass::Finish()
 	Encode(POP_EBP);
 	Encode(NEAR_RET);
 
-	cout << "Finished creating " << mCurrent << " bytes of machine code" << endl;
+	//cout << "Finished creating " << mCurrent << " bytes of machine code" << endl;
 }
 
 void InstructionsClass::Execute()

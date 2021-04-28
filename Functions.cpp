@@ -24,6 +24,20 @@ void CodeAndExecute(std::string filename, int flag) {
     delete sn;
 }
 
+void ParseAndInterpret(std::string filename) {
+    std::cout << "Parser Output:\n";
+    ScannerClass scanner(filename);
+    SymbolTableClass symboltable;
+    ParserClass pc = ParserClass(&scanner,&symboltable);
+    StartNode* sn = pc.Start();
+    MSG("Parser Started, Interpreting...\n");
+    sn->Interpret();
+    std::cout << "\n";
+
+
+    delete sn;
+}
+
 // run tests
 void runTests(std::string filename) {
     /*

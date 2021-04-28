@@ -1,67 +1,21 @@
 void main()
 {
 	int sum;
+	int difference;
+
 	sum = 400;
 	sum += 35;
+
+	difference = 440;
+	difference -= sum;
+
+	// sum should be 435
+	// difference should be 5
+
+	cout << 0;
 	cout << sum;
-
-	int difference;
-	difference = 400 - 35;
 	cout << difference;
-
-	int times;
-	times = 400 * 35;
-	cout << times;
-
-	int div;
-	div = 400 / 35;
-	cout << div;
-
-	int less;
-	less = 400 < 35;
-	cout << less;
-
-	int lessequal;
-	lessequal = 400 <= 35;
-	cout << lessequal;
-
-	int greater;
-	greater = 400 > 35;
-	cout << greater;
-
-	int greaterequal;
-	greaterequal = 400 >= 35;
-	cout << greaterequal;
-
-	int equal;
-	equal = 400 == 35;
-	cout << equal;
-
-	int notequal;
-	notequal = 400 != 35;
-	cout << notequal;
-
-	int or;
-	or = 400 || 35;
-	cout << or;
-
-	int and;
-	and = 400 && 35;
-	cout << and;
-
 	cout << endl;
 
-	cout << sum << difference << times << div << less
-	<< lessequal << greater << greaterequal << equal
-	<< notequal << or << and << endl ;
-
-	if (sum == 435 && times == 14000) {
-		cout << sum;
-	}
-
-	while (sum == 436 || div != 1) {
-		cout << div;
-		div = 1;
-		cout << div;
-	}
+	cout << 0 << sum << difference << endl;
 }
