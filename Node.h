@@ -151,6 +151,18 @@ class MinusEqualsStatementNode: public AssignmentStatementNode {
     virtual ~MinusEqualsStatementNode();
 };
 
+class TimesEqualsStatementNode: public AssignmentStatementNode {
+    private:
+    IdentifierNode *mIdentifierNode;
+    ExpressionNode *mExpressionNode;
+    public:
+    TimesEqualsStatementNode();
+    TimesEqualsStatementNode(IdentifierNode *in, ExpressionNode *en);
+    virtual void Code(InstructionsClass &machineCode);
+    virtual void Interpret();
+    virtual ~TimesEqualsStatementNode();
+};
+
 class CoutStatementNode: public StatementNode {
     private:
     std::vector<ExpressionNode*> mExpressionNodes;

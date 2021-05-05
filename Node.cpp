@@ -205,6 +205,30 @@ MinusEqualsStatementNode::~MinusEqualsStatementNode() {
     delete mExpressionNode;
 }
 
+// TimesEqualsStatementNode
+TimesEqualsStatementNode::TimesEqualsStatementNode(IdentifierNode *in, ExpressionNode *en) {
+    mIdentifierNode = in;
+    mExpressionNode = en;
+}
+
+void TimesEqualsStatementNode::Interpret() {
+    mIdentifierNode->SetValue(mIdentifierNode->Evaluate() * mExpressionNode->Evaluate());
+}
+
+void TimesEqualsStatementNode::Code(InstructionsClass &machineCode) {
+    mIdentifierNode->CodeEvaluate(machineCode);
+    mExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopMulPush();
+    int index = mIdentifierNode->GetIndex();
+    machineCode.PopAndStore(index);
+}
+
+TimesEqualsStatementNode::~TimesEqualsStatementNode() {
+    MSG("PlusEqualsStatementNode Deleting IdentifierNode and ExpressionNode\n");
+    delete mIdentifierNode;
+    delete mExpressionNode;
+}
+
 // CoutStatementNode
 void CoutStatementNode::addExpression(ExpressionNode *en) {
     mExpressionNodes.push_back(en);

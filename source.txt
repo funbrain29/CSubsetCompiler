@@ -1,21 +1,25 @@
-void main()
-{
-	int sum;
-	int difference;
+void main() {
+	if (1 and 2 or 0 && 0) {
+		int times;
+		times = 10;
+		cout << times << endl;
+	}
 
-	sum = 400;
-	sum += 35;
+	times *= 10;
+	cout << times << endl;
 
-	difference = 440;
-	difference -= sum;
+	int i = 1;
 
-	// sum should be 435
-	// difference should be 5
+	do i += 1;
+	while(i != 50);
 
-	cout << 0;
-	cout << sum;
-	cout << difference;
-	cout << endl;
+	cout << i << endl;
 
-	cout << 0 << sum << difference << endl;
+	i = 2;
+
+	do {
+		i *= 2;
+		cout << i << endl;
+	} while(i < 100);
+
 }

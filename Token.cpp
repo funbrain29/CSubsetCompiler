@@ -27,8 +27,14 @@ void TokenClass::CheckReserved() {
         mType = IF_TOKEN;
     } else if (GetLexeme() == "while") {
         mType = WHILE_TOKEN;
+    } else if (GetLexeme() == "do") {
+        mType = DOWHILE_TOKEN;
     } else if (GetLexeme() == "endl") {
         mType = ENDL_TOKEN;
+    } else if (GetLexeme() == "and") {
+        mType = AND_TOKEN;
+    } else if (GetLexeme() == "or") {
+        mType = OR_TOKEN;
     }
 }
 

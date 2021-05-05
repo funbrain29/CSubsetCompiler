@@ -68,6 +68,7 @@ StateMachineClass::StateMachineClass() {
     // += and -= states
     mLegalMoves[PLUS_STATE][EQUAL_CHAR]= PLUSEQU_STATE;
     mLegalMoves[MINUS_STATE][EQUAL_CHAR]= MINUSEQU_STATE;
+    mLegalMoves[TIMES_STATE][EQUAL_CHAR]= TIMESEQU_STATE;
 
     //Corresponding TokenTypes
     for(int i=0; i<LAST_STATE; i++) {
@@ -93,6 +94,7 @@ StateMachineClass::StateMachineClass() {
     mCorrespondingTokenTypes[DIVIDE_STATE] = DIVIDE_TOKEN;
     mCorrespondingTokenTypes[PLUSEQU_STATE] = PLUSEQUALS_TOKEN;
     mCorrespondingTokenTypes[MINUSEQU_STATE] = MINUSEQUALS_TOKEN;
+    mCorrespondingTokenTypes[TIMESEQU_STATE] = TIMESEQUALS_TOKEN;
     //Other Characters:
     mCorrespondingTokenTypes[SEMICOLON_STATE] = SEMICOLON_TOKEN;
     mCorrespondingTokenTypes[LPAREN_STATE] = LPAREN_TOKEN;

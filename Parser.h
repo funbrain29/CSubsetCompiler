@@ -18,6 +18,7 @@ private:
     CoutStatementNode* Cout();
     IfStatementNode* If();
     WhileStatementNode* While();
+    WhileStatementNode* DoWhile();
     IdentifierNode* Identifier();
     IntegerNode* Integer();
     ExpressionNode* Expression();

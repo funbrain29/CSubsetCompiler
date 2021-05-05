@@ -92,6 +92,9 @@ StatementNode* ParserClass::Statement() {
 	} else if (tokentype == WHILE_TOKEN) {
 		WhileStatementNode* xsn = While();
 		return xsn;
+	} else if (tokentype == DOWHILE_TOKEN) {
+		WhileStatementNode* xsn = DoWhile();
+		return xsn;
 	} else if (tokentype == LCURLY_TOKEN) {
 		BlockNode* xsn = Block();
 		return xsn;
@@ -136,6 +139,13 @@ AssignmentStatementNode* ParserClass::Assignment() {
 		ExpressionNode* en = Expression();
 		Match(SEMICOLON_TOKEN);
 		MinusEqualsStatementNode* asn = new MinusEqualsStatementNode(in,en);
+		return asn;
+
+	} else if (tokentype == TIMESEQUALS_TOKEN) {
+		Match(TIMESEQUALS_TOKEN);
+		ExpressionNode* en = Expression();
+		Match(SEMICOLON_TOKEN);
+		TimesEqualsStatementNode* asn = new TimesEqualsStatementNode(in,en);
 		return asn;
 
 	} else {
@@ -205,6 +215,18 @@ WhileStatementNode* ParserClass::While() {
 	Match(RPAREN_TOKEN);
 	BlockNode* bn = Block();
 	WhileStatementNode* in = new WhileStatementNode(en,bn);
+	return in;
+}
+
+WhileStatementNode* ParserClass::DoWhile() {
+	Match(DOWHILE_TOKEN);
+	StatementNode* sn = Statement();
+	Match(WHILE_TOKEN);
+	Match(LPAREN_TOKEN);
+	ExpressionNode* en = Expression();
+	Match(RPAREN_TOKEN);
+	Match(SEMICOLON_TOKEN);
+	WhileStatementNode* in = new WhileStatementNode(en,sn);
 	return in;
 }
 
